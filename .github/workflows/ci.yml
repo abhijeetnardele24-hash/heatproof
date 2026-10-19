@@ -1,0 +1,40 @@
+name: HeatProof CI / Quality & Verification Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Typecheck, Vitest Coverage & Playwright E2E
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: TypeScript Compilation Check
+        run: npx tsc --noEmit
+
+      - name: Vitest Unit & Coverage Suite (>90% threshold)
+        run: npm test
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright E2E & Axe WCAG 2.2 AA Suite
+        run: npx playwright test
+
+      - name: Production Bundle Build
+        run: npm run build

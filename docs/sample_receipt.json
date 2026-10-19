@@ -1,0 +1,46 @@
+{
+  "receiptId": "asr_fac-pune-mandai-01_20261019T100000_1e8338b4",
+  "version": "1.0.0",
+  "facilityId": "fac-pune-mandai-01",
+  "facilityName": "Mandai Central Municipal Hydration & Misting Hub",
+  "resourceType": "hydration_point",
+  "zone": "Pune Central (Shivajinagar & Mandai)",
+  "hazardWindow": {
+    "hazardId": "haz-20261019-1100-pune",
+    "provider": "Open-Meteo Free Weather API (ECMWF IFS Model) + NOAA Rothfusz Heat Index",
+    "zone": "Pune Central (Shivajinagar & Mandai)",
+    "hazardType": "extreme_heat",
+    "severity": "DANGER",
+    "temperatureC": 38.6,
+    "apparentTemperatureC": 45.2,
+    "relativeHumidityPct": 48,
+    "uvIndex": 10.4,
+    "validFrom": "2026-10-19T10:00:00Z",
+    "validUntil": "2026-10-19T14:00:00Z",
+    "sourceTimestamp": "2026-10-19T10:30:00Z",
+    "sourceReference": "https://api.open-meteo.com/v1/forecast?latitude=18.5144&longitude=73.8553",
+    "mode": "LIVE"
+  },
+  "serviceInterval": {
+    "start": "2026-10-19T10:00:00Z",
+    "end": "2026-10-19T14:00:00Z",
+    "durationMinutes": 240
+  },
+  "sourceObservationIds": [
+    "obs-pune-20261019-01"
+  ],
+  "attestationIds": [
+    "att-pune-01",
+    "att-pune-02"
+  ],
+  "evidenceMerkleRoot": "0x1e8338b46836861547a5fd9cfaeb1f5db99af010c715ce34262d3872e583ccde",
+  "verificationStatus": "VERIFIED_SERVICE_DELIVERED",
+  "methodologyVersion": "IEEE-CLIMATECHAIN-ADAPTATION-V1",
+  "limitations": [
+    "Receipt certifies verified operational status of the physical facility during the active hazard window.",
+    "Does not measure individual civic hydration volume or medical outcome metrics.",
+    "Evidence digests represent privacy-minimized public hashes; raw media is preserved off-chain under sanitization rules."
+  ],
+  "issuedAt": "2026-10-19T18:37:55.725Z",
+  "issuerAddress": "0x1234567890123456789012345678901234567890"
+}
