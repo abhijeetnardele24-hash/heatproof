@@ -1,8 +1,8 @@
 # HeatProof — Multimodal AI Evidence Evaluation Report
 
-> **Evaluation Date:** 2026-10-19T18:37:54.516Z  
-> **Model:** `HeatProof-Multimodal-Assessor` (Version: `v1.2-edge`)  
-> **Prompt Architecture:** `2026.10-adaptation-strict`  
+> **Evaluation Date:** 2026-10-19T20:55:04.795Z  
+> **Model:** `Deterministic Evidence Rules Assistant` (Version: `HeatProof-Rules-v1.0`)  
+> **Prompt Architecture:** `2026.10-rules-strict`  
 > **Evaluation Dataset:** 12 Curated Benchmark Scenarios (Diverse Optical & Environmental Degradations)  
 
 ---

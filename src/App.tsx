@@ -258,7 +258,7 @@ export const App: React.FC = () => {
           }}
         >
           <WifiOff size={16} />
-          Operating Offline — Service Worker Active. Evidence queue will sync upon reconnection.
+          Network offline — Service Worker cache active. Evidence submissions will queue locally.
         </div>
       )}
 
@@ -268,7 +268,8 @@ export const App: React.FC = () => {
         setCurrentTab={setCurrentTab}
         lang={lang}
         setLang={setLang}
-        dataMode={climateObservation.mode}
+        weatherMode={climateObservation.mode}
+        ledgerMode="LOCAL_DEMO"
         isDark={isDark}
         setIsDark={setIsDark}
         activeZoneName={climateObservation.zoneName}

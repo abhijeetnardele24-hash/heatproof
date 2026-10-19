@@ -18,37 +18,87 @@ concurrency:
 
 jobs:
   verify:
-    name: Typecheck, Vitest Coverage & Playwright E2E
+    name: "Quality Gates: Typecheck · Lint · Test · E2E · Build · Security"
     runs-on: ubuntu-latest
+    timeout-minutes: 25
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Code (Full History for Security Scan)
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup Node.js
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
 
-      - name: Install Dependencies
+      - name: Install Dependencies (Reproducible)
         run: npm ci
 
-      - name: TypeScript Compilation Check
-        run: npx tsc --noEmit
+      # ── Gate 1: TypeScript ─────────────────────────────────────────────────
+      - name: "Gate 1 — TypeScript Compilation Check"
+        run: npm run typecheck
 
-      - name: Vitest Unit & Coverage Suite (>90% threshold)
+      # ── Gate 2: ESLint ────────────────────────────────────────────────────
+      - name: "Gate 2 — ESLint (warnings allowed, errors fail)"
+        run: npm run lint
+
+      # ── Gate 3: Unit Tests + Coverage ────────────────────────────────────
+      # Thresholds (vitest.config.ts): Statements≥85 | Branches≥80 | Functions≥90 | Lines≥85
+      - name: "Gate 3 — Vitest Unit & Integration Suite with Coverage"
         run: npm test
 
-      - name: Install Playwright Browsers
+      - name: Upload Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 14
+
+      # ── Gate 4: Deterministic Rules Benchmark ────────────────────────────
+      - name: "Gate 4 — Deterministic Evidence Rules Benchmark"
+        run: npm run benchmark:rules
+
+      # ── Gate 5: Security & Secret Scan (Full History) ────────────────────
+      - name: "Gate 5 — Security Scan (Full Git History + Tracked Files)"
+        run: npm run security-scan
+
+      # ── Gate 6: Production Dependency Audit ──────────────────────────────
+      - name: "Gate 6 — npm Audit (High-severity production deps)"
+        run: npm run audit
+        continue-on-error: false
+
+      # ── Gate 7: On-chain Adapter / Ledger Verification ───────────────────
+      - name: "Gate 7 — Ledger Adapter & Cryptographic Proof Integrity"
+        run: npm run verify:onchain
+
+      # ── Gate 8: Evidence Consistency Check ───────────────────────────────
+      - name: "Gate 8 — Evidence Consistency & Provenance Check"
+        run: npm run evidence:check
+
+      # ── Gate 9: Playwright E2E + Axe WCAG 2.2 AA ─────────────────────────
+      - name: Install Playwright Browsers (Chromium only)
         run: npx playwright install --with-deps chromium
 
-      - name: Playwright E2E & Axe WCAG 2.2 AA Suite
-        run: npx playwright test
+      - name: "Gate 9 — Playwright E2E & Axe WCAG 2.2 AA (7 viewports)"
+        run: npm run test:e2e
 
-      - name: Production Bundle Build
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
+
+      # ── Gate 10: Production Build ─────────────────────────────────────────
+      - name: "Gate 10 — Production Bundle Build"
         run: npm run build
 
+      # ── Upload Pages Artifact (main branch only) ──────────────────────────
       - name: Upload GitHub Pages Artifact
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3

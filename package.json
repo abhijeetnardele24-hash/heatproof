@@ -14,6 +14,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "benchmark:ai": "tsx scripts/evaluate-ai.ts",
+    "benchmark:rules": "tsx scripts/evaluate-ai.ts",
     "verify:onchain": "tsx scripts/verify-onchain.ts",
     "generate:receipts": "tsx scripts/generate-sample-receipt.ts",
     "security-scan": "tsx scripts/security-scan.ts",

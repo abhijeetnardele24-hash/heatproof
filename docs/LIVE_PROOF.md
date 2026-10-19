@@ -1,6 +1,6 @@
 # HeatProof — Cryptographic Proof Ledger Report
 
-Generated automatically by `scripts/verify-onchain.ts` on **Mon, 19 Oct 2026 20:25:28 GMT**.
+Generated automatically by `scripts/verify-onchain.ts` on **Mon, 19 Oct 2026 20:55:05 GMT**.
 
 ## 1. Truthful Ledger Operating Modes
 
@@ -34,7 +34,7 @@ HeatProof strictly enforces four explicit operating modes to prevent misleading 
 - **Record ID**: `obs-verify-20261019-01`
 - **Record Type**: `OBSERVATION`
 - **Canonical SHA-256 Digest**: `0x3e2e9ef66bc10263ef256eb9c0b4c4ddf199f1850a6a792b4de1c00152e6a9e0`
-- **Local Proof Hash**: `abfce553df2c5f5fcb78f911f6fc88a2bc1a96aa7c0d2559450a9d6d49b47bdc`
+- **Local Proof Hash**: `16ec786695172956cc27793b66d9a3614be86af9ef6a3a7e67dd79aade245bf9`
 - **EVM Transaction Hash**: `null (Local proof log)`
 - **Sequence Number**: `#1000001`
 - **Status**: `LOCAL_RECORDED`
@@ -45,13 +45,13 @@ HeatProof strictly enforces four explicit operating modes to prevent misleading 
 - **Record ID**: `att-verify-20261019-01`
 - **Parent Observation**: `obs-verify-20261019-01`
 - **Witness Digest**: `0x461e568974780e13e95d1471a317ff273aa949e64d66fda20c1c6685d3c0609e`
-- **Local Proof Hash**: `de92c1d8843d385f5801b5bd421eb4175833ff7c9f42d1316290cf5ced14c32b`
+- **Local Proof Hash**: `cb6e2c3f4985c8efec530341fb2f7a7979992f412b421ebe10f357e0ccd5bd8c`
 - **Status**: `CONFIRMED`
 
 ### C. Adaptation Service Receipt (ASR) Anchor
 - **Receipt ID**: `asr_fac-pune-mandai-01_20261019T100000_1e8338b4`
 - **Merkle Aggregate Root**: `0xf5f17b7483509a839d795a5c8f6521baec671ff9956e5e56e40cc8de3e1f64df`
-- **Local Proof Hash**: `6e3673262c36666396fa3c32b315fc204ee3d6ce5715b8db53cbe5be19c57139`
+- **Local Proof Hash**: `f074b0b06e5eddbf62919d072471b5f14af2e6c71214687362f13d114b14cde1`
 - **Status**: `CONFIRMED`
 - **Notes**: Zone: Pune Central (Shivajinagar & Mandai)
 

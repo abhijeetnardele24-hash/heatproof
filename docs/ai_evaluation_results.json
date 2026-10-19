@@ -34,11 +34,12 @@
     }
   },
   "macroF1": 1,
-  "evaluatedAt": "2026-10-19T18:37:54.516Z",
+  "evaluatedAt": "2026-10-19T20:55:04.795Z",
   "modelMetadata": {
-    "model_name": "HeatProof-Multimodal-Assessor",
-    "model_version": "v1.2-edge",
-    "prompt_version": "2026.10-adaptation-strict"
+    "provider_mode": "DETERMINISTIC_RULES",
+    "model_name": "Deterministic Evidence Rules Assistant",
+    "model_version": "HeatProof-Rules-v1.0",
+    "prompt_version": "2026.10-rules-strict"
   },
   "caseResults": [
     {
