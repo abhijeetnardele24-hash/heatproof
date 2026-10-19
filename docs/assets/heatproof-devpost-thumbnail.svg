@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720">
+  <defs>
+    <style>
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 800; fill: #FFFFFF; font-size: 64px; letter-spacing: -0.03em; }
+      .tagline { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 500; fill: #CBD5E1; font-size: 22px; line-height: 1.4; }
+      .subtext { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 400; fill: #94A3B8; font-size: 16px; }
+      .card-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 700; fill: #F8FAFC; font-size: 19px; }
+      .card-meta { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 500; fill: #94A3B8; font-size: 13px; }
+      .badge-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-weight: 700; font-size: 12px; }
+      .mono-text { font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace; font-size: 12px; fill: #60A5FA; }
+    </style>
+  </defs>
+
+  <!-- Clean Minimal Canvas Background -->
+  <rect width="1280" height="720" fill="#0B132B" />
+
+  <!-- Subtle Structural Accent Grid -->
+  <line x1="60" y1="60" x2="1220" y2="60" stroke="#1E293B" stroke-width="1" />
+  <line x1="60" y1="660" x2="1220" y2="660" stroke="#1E293B" stroke-width="1" />
+
+  <!-- Left Column: Branding & Value Proposition -->
+  <g transform="translate(80, 110)">
+    <!-- Event Badge -->
+    <rect width="320" height="34" rx="17" fill="#0F766E" fill-opacity="0.25" stroke="#14B8A6" stroke-width="1" />
+    <circle cx="18" cy="17" r="4" fill="#2DD4BF" />
+    <text x="32" y="22" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" font-weight="700" fill="#5EEAD4" letter-spacing="0.05em">
+      IEEE CLIMATECHAIN 2026 · HACKATHON
+    </text>
+
+    <!-- Main Title -->
+    <g transform="translate(0, 80)">
+      <!-- Minimalist Sun + Shield Icon -->
+      <circle cx="32" cy="-18" r="22" fill="#F59E0B" fill-opacity="0.2" stroke="#F59E0B" stroke-width="2.5" />
+      <path d="M 32 -32 L 46 -24 L 46 -12 C 46 -2 32 6 32 6 C 32 6 18 -2 18 -12 L 18 -24 Z" fill="#0D9488" stroke="#14B8A6" stroke-width="2" />
+      <text x="75" y="0" class="title">HeatProof</text>
+    </g>
+
+    <!-- Concise Value Proposition -->
+    <text x="0" y="165" class="tagline">
+      <tspan x="0" dy="0">Verifiable Proof-of-Adaptation Network for</tspan>
+      <tspan x="0" dy="34">Urban Extreme-Heat Relief Infrastructure</tspan>
+    </text>
+
+    <!-- Clear Scope Statement -->
+    <text x="0" y="270" class="subtext">
+      <tspan x="0" dy="0">Helps operators verify whether relief services were reported</tspan>
+      <tspan x="0" dy="24">available during acute, hazardous heat emergencies.</tspan>
+    </text>
+
+    <!-- Three Concise Architecture Focus Pills -->
+    <g transform="translate(0, 360)">
+      <!-- Pill 1: Live Weather -->
+      <rect x="0" y="0" width="165" height="38" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1.2" />
+      <text x="14" y="24" class="badge-text" fill="#38BDF8">LIVE WEATHER API</text>
+
+      <!-- Pill 2: PII-Minimized -->
+      <rect x="180" y="0" width="185" height="38" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1.2" />
+      <text x="194" y="24" class="badge-text" fill="#FBBF24">PII-MINIMIZED DATA</text>
+
+      <!-- Pill 3: Tamper-Evident -->
+      <rect x="380" y="0" width="180" height="38" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1.2" />
+      <text x="394" y="24" class="badge-text" fill="#34D399">TAMPER-EVIDENT LOG</text>
+    </g>
+  </g>
+
+  <!-- Right Column: Strong Authentic Interface Focal Point (Real HeatProof Card) -->
+  <g transform="translate(680, 110)">
+    <!-- Primary Facility Card Container -->
+    <rect width="520" height="490" rx="16" fill="#131C31" stroke="#334155" stroke-width="1.5" />
+
+    <!-- Card Header -->
+    <g transform="translate(28, 30)">
+      <!-- Status Pill -->
+      <rect x="0" y="0" width="220" height="28" rx="6" fill="#064E3B" stroke="#059669" stroke-width="1" />
+      <circle cx="14" cy="14" r="4" fill="#34D399" />
+      <text x="26" y="19" class="badge-text" fill="#6EE7B7">VERIFIED OPERATIONAL</text>
+
+      <!-- Quorum Pill -->
+      <rect x="230" y="0" width="130" height="28" rx="6" fill="#1E293B" stroke="#475569" stroke-width="1" />
+      <text x="242" y="19" class="badge-text" fill="#94A3B8">QUORUM N ≥ 2</text>
+
+      <!-- Facility Title & Coarse Location -->
+      <text x="0" y="62" class="card-title">Mandai Municipal Cooling &amp; ORS Hub</text>
+      <text x="0" y="85" class="card-meta">Pune Central Zone · Coarsened Grid (~1.1 km)</text>
+    </g>
+
+    <!-- Hazard Banner Inside Card -->
+    <g transform="translate(28, 140)">
+      <rect width="464" height="64" rx="10" fill="#451A03" stroke="#B45309" stroke-width="1" />
+      <text x="20" y="28" class="badge-text" fill="#FCD34D">METEOROLOGICAL HAZARD: EXTREME DANGER</text>
+      <text x="20" y="50" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="14" font-weight="600" fill="#FEF3C7">
+        Ambient: 38.4°C  |  NOAA Heat Index: 43.2°C  |  RH: 58%
+      </text>
+    </g>
+
+    <!-- Deterministic Decision Support Box -->
+    <g transform="translate(28, 222)">
+      <rect width="464" height="110" rx="10" fill="#1E293B" stroke="#334155" stroke-width="1" />
+      <text x="18" y="26" class="card-meta" fill="#94A3B8">EVIDENCE RULES ASSISTANT</text>
+      <text x="18" y="52" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="700" fill="#F8FAFC">
+        Operational Flow Confirmed · Confidence: 95%
+      </text>
+      <text x="18" y="74" class="card-meta" fill="#CBD5E1">
+        Clean water dispensing verified. Zero PII detected.
+      </text>
+      <text x="18" y="94" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="600" fill="#2DD4BF">
+        Governance: Rules Propose; Humans Decide
+      </text>
+    </g>
+
+    <!-- Cryptographic Proof Digest Footer -->
+    <g transform="translate(28, 350)">
+      <rect width="464" height="110" rx="10" fill="#0B132B" stroke="#1E293B" stroke-width="1" />
+      <text x="18" y="26" class="card-meta" fill="#64748B">TAMPER-EVIDENT LOCAL PROOF RECORD</text>
+      <text x="18" y="52" class="mono-text">
+        Digest: 0x3e2e9ef66bc10263ef256eb9c0b4c4dd...
+      </text>
+      <text x="18" y="74" class="mono-text" fill="#A7F3D0">
+        Local Block #1000000 · Merkle Root Verified
+      </text>
+      <text x="18" y="96" class="card-meta" fill="#94A3B8">
+        Mode: LOCAL_DEMO · Arbitrum Sepolia Adapter Ready
+      </text>
+    </g>
+  </g>
+</svg>

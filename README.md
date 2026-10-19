@@ -3,7 +3,7 @@
 
 [![IEEE ClimateChain 2026](https://img.shields.io/badge/IEEE%20ClimateChain-Global%20Hackathon%202026-0D9488?style=for-the-badge)](https://ieee-climatechain-hack.devpost.com/)
 [![Track](https://img.shields.io/badge/Track-Climate%20Data%20%26%20Environmental%20Monitoring-F59E0B?style=for-the-badge)](https://ieee-climatechain-hack.devpost.com/)
-[![Vitest Coverage](https://img.shields.io/badge/Coverage-87.4%25%20Statements%20%7C%2081.7%25%20Branches%20(95%20Tests)-10B981?style=for-the-badge)]()
+[![Vitest Coverage](https://img.shields.io/badge/Coverage-87.4%25%20Statements%20%7C%2081.7%25%20Branches%20(107%20Tests)-10B981?style=for-the-badge)]()
 [![Playwright E2E](https://img.shields.io/badge/Playwright-56%2F56%20Passed%20(7%20Viewports)-10B981?style=for-the-badge)]()
 [![Axe WCAG 2.2 AA](https://img.shields.io/badge/Accessibility-Axe%20WCAG%202.2%20AA%20(0%20Violations)-0D9488?style=for-the-badge)]()
 [![Ledger Status](https://img.shields.io/badge/Ledger-LOCAL__DEMO%20%7C%20Arbitrum%20Sepolia%20Ready-3B82F6?style=for-the-badge)]()
@@ -15,9 +15,9 @@
 
 During extreme meteorological heatwaves—when wet-bulb temperatures and ambient heat indices exceed 42°C—access to clean drinking water, misting canopies, shaded corridors, and emergency ORS medical relief is a matter of life and death for outdoor laborers, gig workers, elderly citizens, and children.
 
-Yet cities face an enormous **adaptation verification gap**: municipal heat maps frequently show facilities that are dry, vandalized, or padlocked. Simultaneously, international Climate Loss & Damage funds pledge hundreds of millions of dollars toward urban heat resilience, but lack an audit-ready, privacy-preserving mechanism to verify whether physical cooling services were actually delivered.
+Yet cities face an enormous **adaptation verification gap**: municipal heat maps frequently show facilities that are dry, vandalized, or padlocked. Simultaneously, multilateral climate adaptation programs allocate substantial capital toward urban extreme-heat resilience, yet lack an audit-ready, privacy-preserving mechanism to verify whether physical cooling services were actually delivered during life-threatening heat windows.
 
-**HeatProof bridges this gap.** Connecting real-time meteorological hazard modeling with client-side privacy-preserving evidence capture, deterministic rule-based evaluation ("AI Proposes; Humans Decide"), a formal 9-state invariant engine, and cryptographic SHA-256 local hash chains (with turnkey Arbitrum Sepolia testnet broadcast capability), HeatProof guarantees that life-saving extreme-heat relief infrastructure is provably operational when it matters most.
+**HeatProof bridges this gap.** Connecting real-time meteorological hazard modeling with client-side privacy-preserving evidence capture, deterministic rule-based evaluation ("Rules Propose; Humans Decide"), a formal 9-state invariant engine, and cryptographic SHA-256 local hash chains (with turnkey Arbitrum Sepolia testnet broadcast capability), HeatProof helps operators produce provenance-linked evidence about whether relief infrastructure was reported operational during a hazardous heat window.
 
 ---
 
@@ -29,7 +29,7 @@ HeatProof enforces an uncompromising **Zero-Fabrication Policy**. The applicatio
 |:---|:---|:---|:---|
 | **Weather Telemetry** | `LIVE` | Open-Meteo REST API (`api.open-meteo.com`) with NOAA Steadman 16-term heat index polynomial calculation in client. | Real-time meteorological telemetry across 4 Indian heat hubs. Falls back to deterministic cached baseline if offline. |
 | **Map & Relief Facilities** | `DEMO` | Demonstration municipal facility fixtures ([`src/domain/seedData.ts`](src/domain/seedData.ts)) modeled after real Pune, Ahmedabad, and New Delhi heat relief locations. | No live municipal GIS API is claimed. Locations, capacities, and base attributes are structured testbed fixtures. |
-| **Proof Ledger** | `LOCAL_DEMO` / `TESTNET_CONFIRMED` | Client-side SHA-256 tamper-evident hash chain ([`src/ledger/ledgerProvider.ts`](src/ledger/ledgerProvider.ts)) with EIP-1193 / Viem Arbitrum Sepolia adapter (`Chain ID: 421614`). | In demo mode, local blocks are explicitly labeled `LOCAL_DEMO`. No simulated EVM transaction hashes or explorer links are ever generated without a confirmed on-chain wallet broadcast. |
+| **Proof Ledger** | `LOCAL_DEMO` / `TESTNET_CONFIRMED` | Client-side SHA-256 tamper-evident hash chain ([`src/ledger/ledgerProvider.ts`](src/ledger/ledgerProvider.ts)) with EIP-1193 / Viem Arbitrum Sepolia adapter (`Chain ID: 421614`). | In demo mode, local blocks are explicitly labeled `LOCAL_DEMO`. No confirmed testnet transaction is claimed without an active browser wallet and confirmed on-chain broadcast. |
 
 ### Arbitrum Sepolia Adapter & Contract Boundary
 - **Target Network**: Arbitrum Sepolia Testnet (`Chain ID: 421614`, RPC: `https://sepolia-rollup.arbitrum.io/rpc`).
@@ -41,7 +41,7 @@ HeatProof enforces an uncompromising **Zero-Fabrication Policy**. The applicatio
       function verifyProof(bytes32 proofDigest) external view returns (bool exists, uint256 timestamp, address anchorer);
   }
   ```
-- **Fallback Behavior**: When no browser wallet (MetaMask / Rabby) is connected, the application operates gracefully in `LOCAL_DEMO` mode, queuing evidence in local encrypted storage. No mock transaction receipts are claimed.
+- **Fallback Behavior**: When no browser wallet (MetaMask / Rabby) is connected, the application operates gracefully in `LOCAL_DEMO` mode, queuing evidence in local browser storage. No mock transaction receipts are claimed.
 
 ---
 
@@ -67,7 +67,7 @@ HeatProof operates as a four-tier decentralized civic proof network:
     └── Adaptation Service Receipts (Binary Merkle Trees with canonical sorted pairs)
 
 [ Tier 4: Dual-Mode Proof Ledger & Civic Presentation ]
-    ├── LOCAL_DEMO: Local SHA-256 Hash Chain (100% offline Service Worker capability)
+    ├── LOCAL_DEMO: Local SHA-256 Hash Chain (tested offline reload & local workflow after initial online load)
     ├── TESTNET_READY: Viem EVM Broadcast to Arbitrum Sepolia (Chain ID: 421614)
     └── Mineral Civic UI: 7-Viewport Responsive, Multilingual (EN, HI, MR), Axe WCAG 2.2 AA
 ```
@@ -95,7 +95,7 @@ To maintain strict truthfulness and integrity, HeatProof distinguishes what is *
 | **Adaptation Receipts & Merkle Trees** | **LIVE** | Cryptographic root verification & tamper detection | [`src/domain/receipt.ts`](src/domain/receipt.ts) |
 | **Local SHA-256 Hash Chain** | **LIVE** | `LOCAL_DEMO` offline cryptographic blocks | [`src/ledger/ledgerProvider.ts`](src/ledger/ledgerProvider.ts) |
 | **Arbitrum Sepolia Broadcast** | **READY** | Viem provider integrated; broadcasts on key provision | [`src/ledger/ledgerProvider.ts`](src/ledger/ledgerProvider.ts) |
-| **Axe WCAG 2.2 AA Accessibility** | **AUDITED** | 0 violations across 7 viewports via `@axe-core/playwright` | [`tests/e2e/heatproof.spec.ts`](tests/e2e/heatproof.spec.ts) |
+| **Axe WCAG 2.2 AA Accessibility** | **AUDITED** | 0 automated violations across 7 viewports via `@axe-core/playwright` (tested states) | [`tests/e2e/heatproof.spec.ts`](tests/e2e/heatproof.spec.ts) |
 | **7 Responsive Viewport Layouts** | **AUDITED** | 56 Playwright E2E tests passing | [`playwright.config.ts`](playwright.config.ts) |
 | **ZK-SNARK Circuit Proofs** | *PLANNED* | Documented in research roadmap; not yet implemented | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
 | **Formal City Municipal API Integration** | *PLANNED* | Mocked seed facilities; real Open-Meteo weather | [`src/domain/seedData.ts`](src/domain/seedData.ts) |
@@ -143,10 +143,10 @@ Detailed privacy boundaries: [`docs/PRIVACY_BOUNDARY.md`](docs/PRIVACY_BOUNDARY.
 ## 🤖 7. Deterministic Evidence Rules Assistant
 
 Implemented in [`src/ai/rulesAssistant.ts`](src/ai/rulesAssistant.ts):
-Under HeatProof's ethical framework (**"AI Proposes; Humans Decide"**), automated heuristics assist observers without overriding human judgment:
+Under HeatProof's ethical framework (**"Rules Propose; Humans Decide"**), automated heuristics assist observers without overriding human judgment:
 - Analyzes physical indicators: water flow, dispenser cleanliness, shade canopy intactness, active ventilation, and physical padlocks.
 - Computes a deterministic confidence score ($0\% - 100\%$) and generates a recommendation (`AVAILABLE`, `UNAVAILABLE`, or `UNCERTAIN`).
-- **Zero Hallucination Guarantee**: Implemented as a transparent, auditable expert system rather than an opaque generative model, guaranteeing deterministic reproducibility across clients.
+- **Deterministic and Reproducible Rules**: Implemented as a transparent, auditable expert system rather than an opaque generative model, ensuring reproducible, deterministic evaluations across clients.
 - Empirically validated on a 12-case golden benchmark: **100% Accuracy, 1.0 Macro F1, 41.7% Intentional Abstention Rate** when evidence is inconclusive.
 
 ---
@@ -190,8 +190,8 @@ Implemented in [`src/domain/receipt.ts`](src/domain/receipt.ts):
 
 Implemented in [`src/ledger/ledgerProvider.ts`](src/ledger/ledgerProvider.ts):
 HeatProof supports dual ledger execution modes:
-- **`LOCAL_DEMO` (Default)**: Maintains a local SHA-256 cryptographic hash chain in browser IndexedDB/LocalStorage with genesis block anchoring. Operates 100% offline via Service Worker.
-- **`TESTNET_READY`**: Seamlessly integrates with Arbitrum Sepolia (`chainId: 421614`) via `viem`. When funded private keys or wallet connectors are supplied, broadcasts tamper-proof transaction receipts on-chain.
+- **`LOCAL_DEMO` (Default)**: Maintains a local SHA-256 cryptographic hash chain in browser IndexedDB/LocalStorage with genesis block anchoring. Supports the tested local workflow and offline reload after an initial online load.
+- **`TESTNET_READY`**: Seamlessly integrates with Arbitrum Sepolia (`chainId: 421614`) via `viem`. When funded private keys or wallet connectors are supplied, broadcasts tamper-evident transaction receipts on-chain.
 - Truthful status check script: `npm run verify:onchain` truthfully reports `LOCAL_DEMO` mode and validates local hash chain continuity.
 
 ---
@@ -270,7 +270,7 @@ npm run lint
 
 # 3. Vitest Unit & Integration Suite with Coverage
 npm test
-# 82 tests passing (86.75% statements, 98.61% functions)
+# 107 tests passing (87.4% statements, 81.69% branches, 98.61% functions)
 
 # 4. Playwright End-to-End & Axe WCAG 2.2 AA Suite
 npm run test:e2e
@@ -282,7 +282,7 @@ npm run security-scan
 
 # 6. Quality Gate Evidence Check
 npm run evidence:check
-# Generates docs/verification-results.json
+# Checks local snapshot; authoritative evidence is generated in CI with GITHUB_SHA
 
 # 7. Production Application Build
 npm run build
@@ -292,9 +292,9 @@ npm run build
 npm run audit
 # 0 high/critical vulnerabilities
 
-# 9. Truthful Ledger Verification
+# 9. Truthful Ledger & Proof Anchor Verification
 npm run verify:onchain
-# Verifies local hash chains and Sepolia readiness
+# Verifies local digests, Merkle proofs, and Arbitrum Sepolia adapter configuration
 ```
 
 ---
@@ -417,7 +417,7 @@ heatproof/
 
 - **Event**: IEEE ClimateChain Global Hackathon 2026 ([https://ieee-climatechain-hack.devpost.com/](https://ieee-climatechain-hack.devpost.com/))
 - **Primary Track**: **Climate Data & Environmental Monitoring**
-- **Impact Statement**: Bridges physical climate survival infrastructure with verifiable cryptographic accounting, empowering vulnerable frontline communities with reliable relief wayfinding while providing climate loss & damage funds with tamper-proof delivery receipts.
+- **Impact Statement**: Bridges physical climate survival infrastructure with verifiable cryptographic accounting, empowering vulnerable frontline communities with reliable relief wayfinding while providing climate loss & damage funds with tamper-evident delivery receipts.
 
 ---
 

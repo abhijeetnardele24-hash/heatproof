@@ -1,9 +1,12 @@
 {
-  "timestamp": "2026-10-19T21:16:31.587Z",
-  "gitCommit": "98b62c50e075b3dbb16af3cf771afbcee0e8bcda",
+  "evidenceType": "HISTORICAL_LOCAL_SNAPSHOT",
+  "verifiedSourceCommit": "fec87d24ad8b5ca0e39bdfadc822551696efe984",
+  "authoritativeEvidence": "GitHub Actions run artifact (authoritative CI run)",
+  "timestamp": "2026-10-19T21:36:14.088Z",
+  "gitCommit": "fec87d24ad8b5ca0e39bdfadc822551696efe984",
   "unitTests": {
-    "total": 95,
-    "passed": 95,
+    "total": 107,
+    "passed": 107,
     "failed": 0
   },
   "e2eTests": {
@@ -18,7 +21,7 @@
     "lines": 87.4
   },
   "accessibility": {
-    "standard": "WCAG 2.2 AA (Automated Axe-Core)",
+    "standard": "WCAG 2.2 AA (Automated Axe-Core in tested application states)",
     "violations": 0,
     "auditedViewports": 7
   },
@@ -28,7 +31,8 @@
   },
   "onchainVerification": {
     "status": "LOCAL_DEMO",
-    "network": "Local SHA-256 Hash Chains / Optional Arbitrum Sepolia",
-    "localHashChainVerified": true
+    "network": "Local SHA-256 Hash Chains / Arbitrum Sepolia Adapter Ready",
+    "localHashChainVerified": true,
+    "confirmedTransactions": 0
   }
 }

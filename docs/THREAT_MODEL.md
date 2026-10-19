@@ -78,5 +78,5 @@ During lethal meteorological heatwaves (wet-bulb $> 31^\circ\text{C}$ / Heat Ind
 
 ## 4. Residual Risks & Next Evolution
 
-1. **Hardware Provenance**: Future versions will integrate C2PA / Sony/Truepic cryptographic camera hardware signatures to guarantee photos were captured in physical reality.
+1. **Hardware Provenance**: Future versions may integrate C2PA / Coalition for Content Provenance and Authenticity camera hardware signatures. While capture provenance can strengthen authenticity signals against synthetic manipulation, it cannot prove physical scene truthfulness or functional operational availability by itself.
 2. **Reputation Staking**: Integrating decentralized identity (DID) or Gitcoin Passport to weight witness attestations by on-chain civic reputation.

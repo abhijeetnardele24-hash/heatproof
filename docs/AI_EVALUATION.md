@@ -1,6 +1,6 @@
 # HeatProof — Deterministic Evidence-Rules Evaluation Report
 
-> **Evaluation Date:** 2026-10-19T21:13:47.544Z  
+> **Evaluation Date:** 2026-10-19T21:34:47.264Z  
 > **Engine:** `Deterministic Evidence Rules Assistant` (Version: `HeatProof-Rules-v1.0`)  
 > **Ruleset Architecture:** `2026.10-rules-strict` (Deterministic Regular Expression & State Machine Rules)  
 > **Evaluation Dataset:** 12 Curated Benchmark Scenarios (Structured Evidence, Conflict, Provenance, Degradation, Injection-Resistance, and Abstention Scenarios)  

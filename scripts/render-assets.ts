@@ -38,7 +38,7 @@ const targets: RenderTarget[] = [
     deviceScaleFactor: 1,
   },
   {
-    svgPath: path.join(rootDir, "docs", "assets", "heatproof-thumbnail.svg"),
+    svgPath: path.join(rootDir, "docs", "assets", "heatproof-devpost-thumbnail.svg"),
     outputPath: path.join(rootDir, "docs", "assets", "heatproof-devpost-thumbnail.png"),
     width: 1280,
     height: 720,

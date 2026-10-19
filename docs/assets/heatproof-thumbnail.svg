@@ -253,16 +253,16 @@
       <rect width="165" height="42" rx="21" fill="rgba(59, 130, 246, 0.12)" stroke="#3B82F6" stroke-width="1.2" />
       <circle cx="22" cy="21" r="5" fill="#3B82F6" />
       <text x="36" y="26" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="11" font-weight="700" fill="#60A5FA">
-        95 Vitest Units (87.4%)
+        107 Vitest Units (87.4%)
       </text>
     </g>
 
-    <!-- Badge 4: Zero PII Guarantee -->
+    <!-- Badge 4: PII-Minimized Evidence -->
     <g transform="translate(565, 0)">
-      <rect width="175" height="42" rx="21" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" stroke-width="1.2" />
+      <rect width="185" height="42" rx="21" fill="rgba(245, 158, 11, 0.12)" stroke="#F59E0B" stroke-width="1.2" />
       <circle cx="22" cy="21" r="5" fill="#F59E0B" />
       <text x="36" y="26" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="11" font-weight="700" fill="#FBBF24">
-        Zero PII Leaks Scanned
+        PII-Minimized Evidence
       </text>
     </g>
 

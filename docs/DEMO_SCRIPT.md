@@ -97,13 +97,13 @@
   - Open browser DevTools Network tab, toggle offline mode, reload, and demonstrate Service Worker caching and IndexedDB offline persistence.
 - **On-Screen Callout**:
   - `Cryptographic Primitive: Canonical SHA-256 Digest & Hash-Chained Blocks`
-  - `Interoperability: Viem Arbitrum Sepolia Adapter Ready`
-  - `Offline-First: Service Worker + IndexedDB Local Hash Chain`
+  - `Mode Disclosure: This demonstration uses local proof mode. The Arbitrum Sepolia adapter is implemented, but no confirmed testnet transaction is claimed in this recording.`
+  - `Offline Capability: Tested Offline Reload & Local Workflow After Initial Online Load`
 - **Narrator**:
-  > *"Every verified adaptation event generates an immutable cryptographic receipt.*  
+  > *"Every verified adaptation event generates a tamper-evident local receipt.*  
   > *In the Cryptographic Evidence Inspector, auditors can examine the canonical SHA-256 digest calculated over the zero-PII preimage payload, verify the multi-signature witness list, and trace the hash-chained block history.*  
-  > *HeatProof operates out of the box with a zero-cost deterministic local cryptographic ledger, with clean adapter seams ready for live Arbitrum Sepolia smart contract broadcast via Viem.*  
-  > *And if cellular networks fail under power outages, HeatProof’s Service Worker and IndexedDB event store guarantee 100% offline operational continuity."*
+  > *This demonstration uses local proof mode. The Arbitrum Sepolia adapter is implemented, but no confirmed testnet transaction is claimed in this recording.*  
+  > *The installed Service Worker passed automated offline reload and local-workflow testing after an initial online load, ensuring resilient civic wayfinding even when disaster conditions interrupt cellular connectivity."*
 
 ---
 

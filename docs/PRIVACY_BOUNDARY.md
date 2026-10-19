@@ -56,7 +56,7 @@ export function coarsenCoordinates(lat: number, lng: number, precisionDecimals =
   };
 }
 ```
-- **Privacy Guarantee**: Any coordinate pair identifies an entire neighborhood sector of $\approx 1.2\text{ km}^2$, never a single building, doorstep, or person.
+- **Privacy Design Boundary**: Coordinate coarsening snaps locations to an entire neighborhood sector of $\approx 1.2\text{ km}^2$, preventing the submission from identifying a specific doorstep or residence directly. While spatial coarsening significantly reduces location precision, operators must recognize that auxiliary side-channel information (such as sparse population density or unique facility attributes) can still present residual re-identification risks.
 
 ### 3.3 Zero-PII Regex Redactor
 All user-entered text passes through regex sanitizers:

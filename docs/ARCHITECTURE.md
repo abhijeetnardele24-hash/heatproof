@@ -3,7 +3,7 @@
 > **Project**: HeatProof — Verifiable Proof-of-Adaptation Network for Extreme-Heat Relief Infrastructure  
 > **Target Event**: IEEE ClimateChain Global Hackathon 2026  
 > **Track**: Climate Data & Environmental Monitoring  
-> **Status**: Live, Verified, Production-Ready  
+> **Status**: Verified Prototype & Evaluation Suite  
 
 ---
 
@@ -40,17 +40,17 @@ HeatProof bridges real-time meteorological hazard modeling with decentralized, p
 
 ### 2.2 Client-Side Privacy Sanitization Boundary (`src/privacy/`)
 All citizen observations are processed strictly client-side before any hash or payload is broadcast:
-1. **EXIF Metadata Removal**: GPS coordinates, camera serial numbers, lens IDs, and device timestamps are scrubbed from physical image evidence.
+1. **EXIF Metadata Removal**: GPS coordinates, camera serial numbers, lens IDs, and device timestamps are scrubbed from physical image evidence in local browser memory.
 2. **Coordinate Coarsening**: High-precision latitude and longitude coordinates are coarsened to approximately $\sim 1.1\text{ km}$ ($0.01^\circ$ grid cells), preventing user home tracking or physical harassment.
 3. **PII Redaction**: Regular expressions strip phone numbers, Aadhaar numbers, personal email addresses, and vehicle license identifiers from free-text field notes.
 4. **Canonical Evidence Digest**: Preimage JSON structures are deterministically sorted and hashed via standard SHA-256 (`crypto.subtle.digest("SHA-256")`). Only the 32-byte digest is committed on-chain.
 
 ---
 
-### 2.3 Responsible Multimodal AI Evidence Assistant (`src/ai/`)
-- **Principle**: *"AI Proposes; Humans Decide."*
-- **No Direct Ledger Write**: The AI model can never mutate ledger state or directly approve or reject relief assets. It generates structured recommendations for the human observer.
-- **Evidence Feature Extraction**: Evaluates image fingerprints (`operational_flow`, `padlocked_closed`, `dry_broken_tap`, `damaged_hardware`), physical attribute checklists, and field notes.
+### 2.3 Deterministic Evidence-Rules Assistant (`src/ai/`)
+- **Principle**: *"Rules Propose; Humans Decide."*
+- **No Direct Ledger Write**: The rules engine can never mutate ledger state or directly approve or reject relief assets. It generates structured recommendations for the human observer.
+- **Structured Indicator Evaluation**: Evaluates operator-selected evidence types (`operational_flow`, `padlocked_closed`, `dry_broken_tap`, `damaged_hardware`), physical attribute checklists, and sanitized field notes. It does NOT inspect raw image pixels or invoke a neural vision model.
 - **Adversarial Defenses**:
   - Canonical Unicode normalization (`NFKC`).
   - Strict input size constraints ($\le 500$ chars).
@@ -88,9 +88,9 @@ The lifecycle of every relief facility is strictly governed by a formal finite s
 ---
 
 ### 2.6 Multi-Provider Proof Ledger (`src/ledger/`)
-- **EVM Provider**: Implemented via `viem` on Arbitrum Sepolia (`chainId: 421614`).
-  - Broadcasts adaptation proofs when a funded private key or wallet connector is configured.
-- **Local Hash Chain Provider**: Implements a deterministic cryptographic block chain (`sha256(index + prevHash + timestamp + payload)`), enabling 100% offline civic operation in low-connectivity disaster environments (`LOCAL_DEMO`).
+- **EVM Provider**: Implemented via `viem` for Arbitrum Sepolia (`chainId: 421614`).
+  - Broadcasts adaptation proofs when a funded private key or wallet connector is configured. In demo mode, no confirmed on-chain transaction is claimed.
+- **Local Hash Chain Provider**: Implements a deterministic cryptographic block chain (`sha256(index + prevHash + timestamp + payload)`), supporting the tested local workflow and offline reload after an initial online load (`LOCAL_DEMO`).
 - **Fail-Over Architecture**: If RPC endpoints or network connectivity drops, the network seamlessly routes to the local cryptographic chain and resynchronizes upon reconnection.
 
 ---
@@ -98,5 +98,5 @@ The lifecycle of every relief facility is strictly governed by a formal finite s
 ### 2.7 Mineral Civic Presentation Layer (`src/components/`, `src/styles/`)
 - **Design Tokens**: Human-made mineral civic theme using warm stone (`#FBF9F5`), parchment (`#F3EFEA`), and deep mineral teal (`#0D9488`).
 - **Responsive Across 7 Viewports**: Formally verified from 320px ultra-compact mobile up to 1920px large desktop displays.
-- **Accessibility**: Audited 100% Axe WCAG 2.2 AA compliant with zero violations across all 7 viewports, fully operable via keyboard navigation and screen readers.
+- **Accessibility**: Audited with zero automated violations on Axe WCAG 2.2 AA across tested application states in all 7 viewports, fully operable via keyboard navigation and screen readers.
 - **Multilingual Support**: Real-time localized strings in English, Hindi (हिंदी), and Marathi (मराठी).
