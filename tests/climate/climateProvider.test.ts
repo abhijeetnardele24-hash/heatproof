@@ -126,5 +126,40 @@ describe("Climate Providers", () => {
 
       expect(obs.mode).toBe("SYNTHETIC");
     });
+
+    it("falls back to stale cache with DEGRADED mode when live refresh fails after TTL expiration", async () => {
+      const mockApiResponse = {
+        current: {
+          temperature_2m: 39.0,
+          relative_humidity_2m: 50,
+          apparent_temperature: 47.0,
+          wind_speed_10m: 10.0,
+          uv_index: 8.0,
+          time: "2026-10-19T11:00",
+        },
+      };
+
+      const fetchMock = vi.fn()
+        .mockResolvedValueOnce({
+          ok: true,
+          json: async () => mockApiResponse,
+        })
+        .mockRejectedValueOnce(new Error("Network connection dropped"));
+
+      global.fetch = fetchMock;
+
+      const provider = new OpenMeteoProvider();
+      const initial = await provider.getObservation("pune_core");
+      expect(initial.mode).toBe("LIVE");
+
+      // Advance time past 15-minute TTL (16 minutes later)
+      const futureTime = Date.now() + 16 * 60 * 1000;
+      vi.spyOn(Date, "now").mockReturnValue(futureTime);
+
+      const degraded = await provider.getObservation("pune_core");
+      expect(degraded.mode).toBe("DEGRADED");
+      expect(degraded.isCached).toBe(true);
+      expect(degraded.notes).toContain("Stale cached data");
+    });
   });
 });

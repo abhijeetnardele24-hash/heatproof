@@ -68,7 +68,7 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     actionInspect: "Inspect Cryptographic Proof",
     witnessScore: "Witness Trust Score",
     hours: "Hours",
-    aiProposalTitle: "Multimodal AI Assistant Proposal",
+    aiProposalTitle: "Evidence Rules Assistant Proposal",
     aiProposalDisclaimer: "AI Proposes; Humans Decide. Verify observations before submitting.",
     submitReport: "Submit Sanitized Observation",
     submitAttestation: "Record Attestation on Ledger",

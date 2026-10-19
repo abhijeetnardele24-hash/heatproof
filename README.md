@@ -3,7 +3,7 @@
 
 [![IEEE ClimateChain 2026](https://img.shields.io/badge/IEEE%20ClimateChain-Global%20Hackathon%202026-0D9488?style=for-the-badge)](https://ieee-climatechain-hack.devpost.com/)
 [![Track](https://img.shields.io/badge/Track-Climate%20Data%20%26%20Environmental%20Monitoring-F59E0B?style=for-the-badge)](https://ieee-climatechain-hack.devpost.com/)
-[![Vitest Coverage](https://img.shields.io/badge/Coverage-86.8%25%20Statements%20%7C%2098.6%25%20Functions-10B981?style=for-the-badge)]()
+[![Vitest Coverage](https://img.shields.io/badge/Coverage-87.4%25%20Statements%20%7C%2081.7%25%20Branches%20(95%20Tests)-10B981?style=for-the-badge)]()
 [![Playwright E2E](https://img.shields.io/badge/Playwright-56%2F56%20Passed%20(7%20Viewports)-10B981?style=for-the-badge)]()
 [![Axe WCAG 2.2 AA](https://img.shields.io/badge/Accessibility-Axe%20WCAG%202.2%20AA%20(0%20Violations)-0D9488?style=for-the-badge)]()
 [![Ledger Status](https://img.shields.io/badge/Ledger-LOCAL__DEMO%20%7C%20Arbitrum%20Sepolia%20Ready-3B82F6?style=for-the-badge)]()
@@ -21,7 +21,31 @@ Yet cities face an enormous **adaptation verification gap**: municipal heat maps
 
 ---
 
-## 🏛️ 2. System Architecture
+## ⚖️ 2. Judge Quick-Start & Provenance Guide
+
+HeatProof enforces an uncompromising **Zero-Fabrication Policy**. The application explicitly separates and indicates three distinct data provenance boundaries across the UI and codebase:
+
+| Provenance Stream | Active Mode | Data Source & Mechanism | Honesty Boundary |
+|:---|:---|:---|:---|
+| **Weather Telemetry** | `LIVE` | Open-Meteo REST API (`api.open-meteo.com`) with NOAA Steadman 16-term heat index polynomial calculation in client. | Real-time meteorological telemetry across 4 Indian heat hubs. Falls back to deterministic cached baseline if offline. |
+| **Map & Relief Facilities** | `DEMO` | Demonstration municipal facility fixtures ([`src/domain/seedData.ts`](src/domain/seedData.ts)) modeled after real Pune, Ahmedabad, and New Delhi heat relief locations. | No live municipal GIS API is claimed. Locations, capacities, and base attributes are structured testbed fixtures. |
+| **Proof Ledger** | `LOCAL_DEMO` / `TESTNET_CONFIRMED` | Client-side SHA-256 tamper-evident hash chain ([`src/ledger/ledgerProvider.ts`](src/ledger/ledgerProvider.ts)) with EIP-1193 / Viem Arbitrum Sepolia adapter (`Chain ID: 421614`). | In demo mode, local blocks are explicitly labeled `LOCAL_DEMO`. No simulated EVM transaction hashes or explorer links are ever generated without a confirmed on-chain wallet broadcast. |
+
+### Arbitrum Sepolia Adapter & Contract Boundary
+- **Target Network**: Arbitrum Sepolia Testnet (`Chain ID: 421614`, RPC: `https://sepolia-rollup.arbitrum.io/rpc`).
+- **Contract Interface**: Minimal audited proof anchor contract:
+  ```solidity
+  interface IHeatProofAnchor {
+      event ProofAnchored(bytes32 indexed proofDigest, string recordType, string facilityId, address indexed anchorer, uint256 timestamp);
+      function anchorProof(bytes32 proofDigest, string calldata recordType, string calldata facilityId) external returns (bytes32);
+      function verifyProof(bytes32 proofDigest) external view returns (bool exists, uint256 timestamp, address anchorer);
+  }
+  ```
+- **Fallback Behavior**: When no browser wallet (MetaMask / Rabby) is connected, the application operates gracefully in `LOCAL_DEMO` mode, queuing evidence in local encrypted storage. No mock transaction receipts are claimed.
+
+---
+
+## 🏛️ 3. System Architecture
 
 HeatProof operates as a four-tier decentralized civic proof network:
 
@@ -54,7 +78,7 @@ Detailed architectural specifications and sequence diagrams: [`docs/ARCHITECTURE
 
 ---
 
-## ⚖️ 3. Truthful Feature & Execution Status Matrix
+## 📊 4. Truthful Feature & Execution Status Matrix
 
 To maintain strict truthfulness and integrity, HeatProof distinguishes what is **Live & Implemented**, what is **Demonstrated via Local Simulation**, and what is **Planned Future Work**:
 
@@ -65,7 +89,7 @@ To maintain strict truthfulness and integrity, HeatProof distinguishes what is *
 | **Client-Side EXIF & GPS Stripping** | **LIVE** | In-memory canvas re-encoding | [`src/privacy/evidenceHasher.ts`](src/privacy/evidenceHasher.ts) |
 | **Coordinate Coarsening (~1.1km)** | **LIVE** | Grid snapping math tested against boundary points | [`src/privacy/sanitizer.ts`](src/privacy/sanitizer.ts) |
 | **Regex PII Filter (Aadhaar, Phones)** | **LIVE** | 20+ redactor test assertions passing | [`src/privacy/sanitizer.ts`](src/privacy/sanitizer.ts) |
-| **Deterministic Evidence Rules Assistant** | **LIVE** | 12-case golden benchmark (100% accuracy, 0 hallucinations) | [`src/ai/rulesAssistant.ts`](src/ai/rulesAssistant.ts) |
+| **Deterministic Evidence Rules Assistant** | **LIVE** | 12-case golden benchmark (100% accuracy, 0 hallucinations) | [`src/ai/evidenceAssistant.ts`](src/ai/evidenceAssistant.ts) |
 | **9-State Attestation Lifecycle** | **LIVE** | Vitest invariant test matrix | [`src/domain/stateMachine.ts`](src/domain/stateMachine.ts) |
 | **Anti-Sybil Witness Quorum ($N \ge 2$)** | **LIVE** | Self-attestation & duplicate address rejection | [`src/domain/stateMachine.ts`](src/domain/stateMachine.ts) |
 | **Adaptation Receipts & Merkle Trees** | **LIVE** | Cryptographic root verification & tamper detection | [`src/domain/receipt.ts`](src/domain/receipt.ts) |

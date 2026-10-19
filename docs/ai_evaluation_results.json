@@ -34,7 +34,7 @@
     }
   },
   "macroF1": 1,
-  "evaluatedAt": "2026-10-19T20:55:04.795Z",
+  "evaluatedAt": "2026-10-19T21:13:47.544Z",
   "modelMetadata": {
     "provider_mode": "DETERMINISTIC_RULES",
     "model_name": "Deterministic Evidence Rules Assistant",
@@ -91,8 +91,8 @@
       "confidence": 0.35,
       "correct": true,
       "uncertainties": [
-        "Sub-optimal visual conditions noted: too far, unclear.",
-        "Visual evidence lacks conclusive tap/cooling flow indicators."
+        "Reported field evidence notes environmental degradation: too far, unclear.",
+        "Submitted evidence lacks conclusive operational flow indicators."
       ]
     },
     {
@@ -104,8 +104,8 @@
       "confidence": 0.35,
       "correct": true,
       "uncertainties": [
-        "Sub-optimal visual conditions noted: dark, unclear, night time.",
-        "Visual evidence lacks conclusive tap/cooling flow indicators."
+        "Reported field evidence notes environmental degradation: dark, unclear, night time.",
+        "Submitted evidence lacks conclusive operational flow indicators."
       ]
     },
     {
@@ -117,8 +117,8 @@
       "confidence": 0.35,
       "correct": true,
       "uncertainties": [
-        "Sub-optimal visual conditions noted: glare, blinding sun.",
-        "Visual evidence lacks conclusive tap/cooling flow indicators."
+        "Reported field evidence notes environmental degradation: glare, blinding sun.",
+        "Submitted evidence lacks conclusive operational flow indicators."
       ]
     },
     {
@@ -130,7 +130,7 @@
       "confidence": 0.2,
       "correct": true,
       "uncertainties": [
-        "No relief facility or equipment identifiable in visual field."
+        "No relief facility or equipment identifiable in reported evidence."
       ]
     },
     {

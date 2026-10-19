@@ -10,7 +10,7 @@ export default defineConfig({
     exclude: ["tests/e2e/**", "node_modules/**"],
     coverage: {
       provider: "v8",
-      reporter: ["text", "json", "html"],
+      reporter: ["text", "json", "html", "json-summary"],
       include: [
         "src/ai/**",
         "src/climate/**",
@@ -33,7 +33,7 @@ export default defineConfig({
       ],
       thresholds: {
         statements: 85,
-        branches: 75,
+        branches: 80,
         functions: 90,
         lines: 85,
       },

@@ -200,10 +200,10 @@ export class DeterministicEvidenceRulesAssistant implements EvidenceAnalysisProv
     if (allText.includes("no cooler visible") || allText.includes("pavement only") || allText.includes("empty road")) {
       resource_visible = false;
       operational_state = "uncertain";
-      uncertainties.push("No relief facility or equipment identifiable in visual field.");
+      uncertainties.push("No relief facility or equipment identifiable in reported evidence.");
       confidence = 0.2;
     } else if (lowVisMatches.length > 0) {
-      uncertainties.push(`Sub-optimal visual conditions noted: ${lowVisMatches.join(", ")}.`);
+      uncertainties.push(`Reported field evidence notes environmental degradation: ${lowVisMatches.join(", ")}.`);
       confidence = Math.max(0.3, confidence - 0.25);
     }
 
@@ -223,7 +223,7 @@ export class DeterministicEvidenceRulesAssistant implements EvidenceAnalysisProv
         confidence = 0.4;
       } else {
         operational_state = "uncertain";
-        uncertainties.push("Visual evidence lacks conclusive tap/cooling flow indicators.");
+        uncertainties.push("Submitted evidence lacks conclusive operational flow indicators.");
         confidence = 0.35;
       }
     }

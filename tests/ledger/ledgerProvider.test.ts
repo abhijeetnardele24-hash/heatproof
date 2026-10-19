@@ -99,6 +99,36 @@ describe("Blockchain Proof Ledger Providers", () => {
       expect(record.notes).toContain("Zone 1");
       expect(record.explorerUrl).toBeNull();
     });
+
+    it("records attestations using both 4-arg and 5-arg signatures and fallback hash", async () => {
+      const provider = new LocalDeterministicLedgerProvider();
+      const testDigest = sha256Hex("attestation signature test");
+      const attester = "0x2222222222222222222222222222222222222222";
+
+      // 4-arg signature with digest as 3rd arg
+      const rec1 = await provider.recordAttestationDigest("att-sig-01", "obs-01", testDigest, attester);
+      expect(rec1.recordId).toBe("att-sig-01");
+      expect(rec1.recordDigest).toBe(testDigest);
+      expect(rec1.attesterOrReporter).toBe(attester);
+
+      // 5-arg signature with facilityId and digest
+      const rec2 = await provider.recordAttestationDigest("att-sig-02", "obs-01", "fac-01", testDigest, attester);
+      expect(rec2.recordId).toBe("att-sig-02");
+      expect(rec2.facilityId).toBe("fac-01");
+      expect(rec2.recordDigest).toBe(testDigest);
+
+      // 5-arg fallback without digest
+      const rec3 = await provider.recordAttestationDigest("att-sig-03", "obs-01", "fac-01");
+      expect(rec3.recordId).toBe("att-sig-03");
+      expect(rec3.recordDigest).toBeDefined();
+    });
+
+    it("returns verified: false with descriptive discrepancy when querying non-existent recordId", async () => {
+      const provider = new LocalDeterministicLedgerProvider();
+      const missing = await provider.verifyDigest("non-existent-record", sha256Hex("query"));
+      expect(missing.verified).toBe(false);
+      expect(missing.discrepancy).toContain("No proof log entry found");
+    });
   });
 
   describe("EvmBrowserWalletLedgerProvider (Real EIP-1193)", () => {

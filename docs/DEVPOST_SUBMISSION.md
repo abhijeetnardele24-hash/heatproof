@@ -37,7 +37,7 @@ City authorities publish static heat action plans, yet field audits show that up
 - **Privacy & Cryptography**: Web Crypto API (`crypto.subtle`), SHA-256 canonical JSON serialization, client-side EXIF stripping canvas pipeline, regex PII sanitizers.
 - **Rules Engine & Evaluation**: Transparent heuristic evidence assistant with prompt-injection defense, validated against a 12-case golden benchmark suite.
 - **Ledger Integration**: Dual-mode ledger provider supporting local SHA-256 hash chains (`LOCAL_DEMO`) and `viem` Ethereum integration for Arbitrum Sepolia.
-- **Testing & Quality Assurance**: Vitest (82 unit & integration tests, 86.75% statements / 98.61% functions coverage), Playwright (56 E2E tests across 7 viewports), Axe-Core WCAG 2.2 AA automated accessibility scanner.
+- **Testing & Quality Assurance**: Vitest (95 unit & integration tests, 87.4% statements / 81.7% branches / 98.61% functions coverage), Playwright (56 E2E tests across 7 viewports), Axe-Core WCAG 2.2 AA automated accessibility scanner.
 
 ---
 
