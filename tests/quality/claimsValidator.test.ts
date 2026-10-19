@@ -84,6 +84,32 @@ describe("Evidence Claims Validator", () => {
     expect(violations.some((v) => v.pattern.includes("Zero PII Guarantee"))).toBe(true);
   });
 
+  it("flags unqualified WCAG 2.2 AA Compliant claims", () => {
+    const badText = "The interface is fully WCAG 2.2 AA Compliant across all pages.";
+    const violations = auditContentForOverclaims(badText, "mock.md");
+    expect(violations.length).toBeGreaterThanOrEqual(1);
+    expect(violations.some((v) => v.pattern.includes("WCAG 2.2 AA Compliant"))).toBe(true);
+  });
+
+  it("permits scoped automated Axe testing statements for WCAG", () => {
+    const okText = "Automated Axe Scan: 0 Violations in Tested States";
+    const violations = auditContentForOverclaims(okText, "mock.md");
+    expect(violations.length).toBe(0);
+  });
+
+  it("flags unqualified zero-PII compliant claims", () => {
+    const badText = "All exported audit records are zero-PII compliant.";
+    const violations = auditContentForOverclaims(badText, "mock.md");
+    expect(violations.length).toBeGreaterThanOrEqual(1);
+    expect(violations.some((v) => v.pattern.includes("zero-PII compliant"))).toBe(true);
+  });
+
+  it("permits scoped PII minimization statements", () => {
+    const okText = "All exported audit records are PII-minimized through client-side sanitization and coordinate coarsening.";
+    const violations = auditContentForOverclaims(okText, "mock.md");
+    expect(violations.length).toBe(0);
+  });
+
   it("passes cleanly on all current submission-facing files in repository", () => {
     const violations = runClaimsAudit(rootDir);
     if (violations.length > 0) {

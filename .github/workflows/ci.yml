@@ -75,22 +75,9 @@ jobs:
       - name: "Gate 7 — Ledger Adapter & Cryptographic Proof Integrity"
         run: npm run verify:onchain
 
-      # ── Gate 8: Evidence Consistency & Prohibited Claims Check ───────────
-      - name: "Gate 8 — Evidence Consistency & Prohibited Claims Check"
-        env:
-          GITHUB_SHA: ${{ github.sha }}
-          GITHUB_SERVER_URL: ${{ github.server_url }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_RUN_ID: ${{ github.run_id }}
+      # ── Gate 8: Prohibited Claims & Pre-E2E Evidence Check ───────────────
+      - name: "Gate 8 — Prohibited Claims & Pre-E2E Evidence Check"
         run: npm run evidence:check
-
-      - name: Upload Authoritative Verification Evidence Artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: authoritative-verification-evidence
-          path: docs/verification-results.json
-          retention-days: 30
 
       # ── Gate 9: Playwright E2E + Axe WCAG 2.2 AA ─────────────────────────
       - name: Install Playwright Browsers (Chromium only)
@@ -110,6 +97,23 @@ jobs:
       # ── Gate 10: Production Build ─────────────────────────────────────────
       - name: "Gate 10 — Production Bundle Build"
         run: npm run build
+
+      # ── Authoritative Verification Report (Generated after all gates pass) ─
+      - name: "Generate Authoritative Verification Report from Live Outputs"
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: npm run evidence:report
+
+      - name: Upload Authoritative Verification Evidence Artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: authoritative-verification-evidence
+          path: docs/verification-results.json
+          retention-days: 30
 
       # ── Upload Pages Artifact (main branch only) ──────────────────────────
       - name: Upload GitHub Pages Artifact

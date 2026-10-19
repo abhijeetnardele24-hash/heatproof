@@ -20,6 +20,7 @@
     "security-scan": "tsx scripts/security-scan.ts",
     "generate:assets": "tsx scripts/render-assets.ts",
     "evidence:check": "tsx scripts/check-evidence.ts",
+    "evidence:report": "tsx scripts/generate-evidence-report.ts",
     "audit": "npm audit --omit=dev --audit-level=high"
   },
   "dependencies": {

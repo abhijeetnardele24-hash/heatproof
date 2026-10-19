@@ -3,7 +3,7 @@
 
 [![IEEE ClimateChain 2026](https://img.shields.io/badge/IEEE%20ClimateChain-Global%20Hackathon%202026-0D9488?style=for-the-badge)](https://ieee-climatechain-hack.devpost.com/)
 [![Track](https://img.shields.io/badge/Track-Climate%20Data%20%26%20Environmental%20Monitoring-F59E0B?style=for-the-badge)](https://ieee-climatechain-hack.devpost.com/)
-[![Vitest Coverage](https://img.shields.io/badge/Coverage-87.4%25%20Statements%20%7C%2081.7%25%20Branches%20(107%20Tests)-10B981?style=for-the-badge)]()
+[![Vitest Coverage](https://img.shields.io/badge/Coverage-87.4%25%20Statements%20%7C%2081.7%25%20Branches%20(121%20Tests)-10B981?style=for-the-badge)]()
 [![Playwright E2E](https://img.shields.io/badge/Playwright-56%2F56%20Passed%20(7%20Viewports)-10B981?style=for-the-badge)]()
 [![Axe WCAG 2.2 AA](https://img.shields.io/badge/Accessibility-Axe%20WCAG%202.2%20AA%20(0%20Violations)-0D9488?style=for-the-badge)]()
 [![Ledger Status](https://img.shields.io/badge/Ledger-LOCAL__DEMO%20%7C%20Arbitrum%20Sepolia%20Ready-3B82F6?style=for-the-badge)]()
@@ -270,7 +270,7 @@ npm run lint
 
 # 3. Vitest Unit & Integration Suite with Coverage
 npm test
-# 107 tests passing (87.4% statements, 81.69% branches, 98.61% functions)
+# 121 tests passing (87.4% statements, 81.69% branches, 98.61% functions)
 
 # 4. Playwright End-to-End & Axe WCAG 2.2 AA Suite
 npm run test:e2e

@@ -173,7 +173,7 @@
 - **Evidence Being Demonstrated**: Real-time KPI aggregation, thermal priority ranking, cryptographic JSON bundle export.
 - **Provenance Badges Visible**: `Operations: Multi-Source Provenance Aggregation`.
 - **Transition**: Slow fade to concluding title slide.
-- **Privacy / Redaction Requirement**: All exported audit records are zero-PII compliant.
+- **Privacy / Redaction Requirement**: All exported audit records are PII-minimized through client-side sanitization and coordinate coarsening.
 
 ---
 

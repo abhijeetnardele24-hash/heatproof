@@ -35,7 +35,7 @@
   - Click on the "Mandai Municipal Cooling & ORS Hub" card to expand operational metrics and live status indicators.
 - **On-Screen Callout**:
   - `Telemetry Provenance: LIVE (Open-Meteo REST API)`
-  - `Wayfinding: Multi-lingual (EN / HI / MR) | WCAG 2.2 AA Compliant`
+  - `Wayfinding: Multi-lingual (EN / HI / MR) | Automated Axe Scan: 0 Violations in Tested States`
 - **Narrator**:
   > *"HeatProof bridges live environmental science directly to vulnerable citizens and frontline gig workers.*  
   > *The system connects in real time to Numerical Weather Prediction streams via the Open-Meteo API, computing Steadman apparent temperature and Rothfusz heat stress adjustments dynamically.*  

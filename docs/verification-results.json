@@ -1,24 +1,49 @@
 {
   "evidenceType": "HISTORICAL_LOCAL_SNAPSHOT",
-  "verifiedSourceCommit": "fec87d24ad8b5ca0e39bdfadc822551696efe984",
-  "authoritativeEvidence": "GitHub Actions run artifact (authoritative CI run)",
-  "timestamp": "2026-10-19T21:36:14.088Z",
-  "gitCommit": "fec87d24ad8b5ca0e39bdfadc822551696efe984",
+  "verifiedSourceCommit": "69cd26cb12fd9b47fd3b01cee52d1aded75223ca",
+  "authoritativeEvidence": "Local Historical Snapshot for commit 69cd26cb12fd9b47fd3b01cee52d1aded75223ca",
+  "timestamp": "2026-10-19T21:49:30.378Z",
+  "gitCommit": "69cd26cb12fd9b47fd3b01cee52d1aded75223ca",
   "unitTests": {
-    "total": 107,
-    "passed": 107,
+    "total": 121,
+    "passed": 121,
     "failed": 0
   },
   "e2eTests": {
     "total": 56,
     "passed": 56,
-    "viewports": 7
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 110761,
+    "viewports": 7,
+    "projects": [
+      "Mobile Small (320px)",
+      "Mobile Compact (360px)",
+      "Mobile Standard (390px)",
+      "Tablet (768px)",
+      "Laptop (1024px)",
+      "Desktop HD (1440px)",
+      "Desktop Large (1920px)"
+    ]
   },
   "coverage": {
     "statements": 87.4,
     "branches": 81.69,
     "functions": 98.61,
     "lines": 87.4
+  },
+  "build": {
+    "success": true,
+    "builtAt": "2026-10-19T21:48:40.617Z",
+    "distArtifactsFound": [
+      "assets",
+      "icon-192.png",
+      "icon-512.png",
+      "icon.svg",
+      "index.html",
+      "manifest.webmanifest",
+      "sw.js"
+    ]
   },
   "accessibility": {
     "standard": "WCAG 2.2 AA (Automated Axe-Core in tested application states)",

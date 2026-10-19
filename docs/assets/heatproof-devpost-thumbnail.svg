@@ -70,14 +70,18 @@
 
     <!-- Card Header -->
     <g transform="translate(28, 30)">
-      <!-- Status Pill -->
-      <rect x="0" y="0" width="220" height="28" rx="6" fill="#064E3B" stroke="#059669" stroke-width="1" />
+      <!-- Status Pill: Clearly labeled DEMO: OPERATIONAL EVIDENCE -->
+      <rect x="0" y="0" width="235" height="28" rx="6" fill="#064E3B" stroke="#059669" stroke-width="1" />
       <circle cx="14" cy="14" r="4" fill="#34D399" />
-      <text x="26" y="19" class="badge-text" fill="#6EE7B7">VERIFIED OPERATIONAL</text>
+      <text x="26" y="19" class="badge-text" fill="#6EE7B7">DEMO: OPERATIONAL EVIDENCE</text>
 
       <!-- Quorum Pill -->
-      <rect x="230" y="0" width="130" height="28" rx="6" fill="#1E293B" stroke="#475569" stroke-width="1" />
-      <text x="242" y="19" class="badge-text" fill="#94A3B8">QUORUM N ≥ 2</text>
+      <rect x="245" y="0" width="115" height="28" rx="6" fill="#1E293B" stroke="#475569" stroke-width="1" />
+      <text x="256" y="19" class="badge-text" fill="#94A3B8">QUORUM N ≥ 2</text>
+
+      <!-- Demo Record Tag -->
+      <rect x="370" y="0" width="94" height="28" rx="6" fill="#1E1B4B" stroke="#6366F1" stroke-width="1" />
+      <text x="380" y="19" class="badge-text" fill="#A5B4FC">DEMO RECORD</text>
 
       <!-- Facility Title & Coarse Location -->
       <text x="0" y="62" class="card-title">Mandai Municipal Cooling &amp; ORS Hub</text>

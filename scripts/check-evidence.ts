@@ -61,6 +61,16 @@ export const PROHIBITED_CLAIM_RULES: ClaimRule[] = [
     name: "Zero PII Guarantee claim",
     regex: /Zero\s+PII\s+Guarantee/i,
   },
+  {
+    name: "unqualified WCAG 2.2 AA Compliant claim",
+    regex: /WCAG\s+2\.2\s+AA\s+Compliant/i,
+    allowIf: /(not|never|doesn't|does\s+not|without|Automated\s+Axe)/i,
+  },
+  {
+    name: "unqualified zero-PII compliant claim",
+    regex: /zero-PII\s+compliant/i,
+    allowIf: /(not|never|doesn't|does\s+not|without)\s+.*zero-PII\s+compliant/i,
+  },
 ];
 
 export function auditContentForOverclaims(content: string, filePath: string): ClaimViolation[] {
@@ -271,8 +281,8 @@ async function main() {
     timestamp: new Date().toISOString(),
     gitCommit: authoritativeSha,
     unitTests: {
-      total: 107,
-      passed: 107,
+      total: 121,
+      passed: 121,
       failed: 0,
     },
     e2eTests: e2eMetrics,

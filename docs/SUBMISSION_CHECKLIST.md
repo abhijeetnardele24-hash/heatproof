@@ -29,7 +29,7 @@
 
 ### 2.1 Vitest Unit & Coverage Suite
 - **Command**: `npm test`
-- **Result**: `107 passed (107 tests across 12 test files)`
+- **Result**: `121 passed (121 tests across 13 test files)`
 - **Coverage Summary**:
   - Statements: **87.4%** (threshold: 85%)
   - Branches: **81.69%** (threshold: 80%)
