@@ -17,6 +17,8 @@
     "verify:onchain": "tsx scripts/verify-onchain.ts",
     "generate:receipts": "tsx scripts/generate-sample-receipt.ts",
     "security-scan": "tsx scripts/security-scan.ts",
+    "generate:assets": "tsx scripts/render-assets.ts",
+    "evidence:check": "tsx scripts/check-evidence.ts",
     "audit": "npm audit --omit=dev --audit-level=high"
   },
   "dependencies": {

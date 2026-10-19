@@ -1,68 +1,85 @@
 {
-  "verifiedAt": "2026-10-19T18:38:00.792Z",
+  "verifiedAt": "2026-10-19T20:25:28.743Z",
   "activeLedger": {
-    "providerName": "HeatProof Deterministic Cryptographic Ledger",
-    "networkName": "Local Secure Proof Log (SHA-256 Hash Chain)",
+    "providerName": "HeatProof Local Cryptographic Proof Log",
+    "networkName": "Local Deterministic Proof Log (Demo)",
     "isAvailable": true,
-    "blockHeight": 1048200,
-    "latencyMs": 1,
-    "mode": "DETERMINISTIC_LOCAL"
+    "blockHeight": 1000000,
+    "latencyMs": 0,
+    "mode": "LOCAL_DEMO"
   },
   "evmTestnetStatus": {
-    "providerName": "EVM Viem RPC Client (Fallback Active)",
-    "networkName": "Ethereum Sepolia Testnet (RPC Unavailable)",
-    "chainId": 11155111,
+    "providerName": "EVM Browser Wallet (Not Detected)",
+    "networkName": "Arbitrum Sepolia Testnet (Wallet Required)",
+    "chainId": 421614,
     "isAvailable": false,
-    "mode": "DETERMINISTIC_LOCAL",
-    "rateLimitWarning": "EVM public RPC unreachable or rate-limited. Running in deterministic cryptographic fallback mode."
+    "mode": "DEGRADED",
+    "rateLimitWarning": "No EIP-1193 browser wallet detected. Operating in degraded / local mode.",
+    "walletConnected": false
   },
   "localLedgerStatus": {
-    "providerName": "HeatProof Deterministic Cryptographic Ledger",
-    "networkName": "Local Secure Proof Log (SHA-256 Hash Chain)",
+    "providerName": "HeatProof Local Cryptographic Proof Log",
+    "networkName": "Local Deterministic Proof Log (Demo)",
     "isAvailable": true,
-    "blockHeight": 1048200,
-    "latencyMs": 1,
-    "mode": "DETERMINISTIC_LOCAL"
+    "blockHeight": 1000000,
+    "latencyMs": 0,
+    "mode": "LOCAL_DEMO"
   },
   "receipts": [
     {
       "recordId": "obs-verify-20261019-01",
       "recordType": "OBSERVATION",
-      "digest": "0x3e2e9ef66bc10263ef256eb9c0b4c4ddf199f1850a6a792b4de1c00152e6a9e0",
-      "network": "Local Secure Proof Log",
-      "transactionHash": "0x2db646c2c0fd93f457cb0b369550e0ff9d4a8ce5031520401cecad043d51bcb6",
-      "blockNumber": 1048201,
-      "timestamp": "2026-10-19T18:38:00.789Z",
-      "status": "CONFIRMED",
+      "facilityId": "fac-pune-mandai-01",
+      "recordDigest": "0x3e2e9ef66bc10263ef256eb9c0b4c4ddf199f1850a6a792b4de1c00152e6a9e0",
+      "mode": "LOCAL_DEMO",
+      "status": "LOCAL_RECORDED",
+      "isEvmTransaction": false,
+      "transactionHash": null,
+      "localProofHash": "abfce553df2c5f5fcb78f911f6fc88a2bc1a96aa7c0d2559450a9d6d49b47bdc",
+      "sequenceNumber": 1000001,
+      "blockNumber": 1000001,
+      "timestamp": "2026-10-19T20:25:28.740Z",
+      "attesterOrReporter": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+      "network": "Local Secure Proof Log (SHA-256 Chain)",
       "explorerUrl": null,
-      "gasUsed": "21000",
-      "notes": "Deterministic cryptographic receipt generated for observation obs-verify-20261019-01. Digest: 0x3e2e9ef6..."
+      "explanation": "Observation anchored in local append-only hash chain. Sequence #1000001. Prior log hash: abfce553df..."
     },
     {
       "recordId": "att-verify-20261019-01",
       "recordType": "ATTESTATION",
-      "digest": "0x461e568974780e13e95d1471a317ff273aa949e64d66fda20c1c6685d3c0609e",
-      "network": "Local Secure Proof Log",
-      "transactionHash": "0x0fb71173315ee48153cf61b0d4143929d87539c5496e60518f4da4d11a14df01",
-      "blockNumber": 1048202,
-      "timestamp": "2026-10-19T18:38:00.791Z",
+      "facilityId": "fac-pune-mandai-01",
+      "recordDigest": "0x461e568974780e13e95d1471a317ff273aa949e64d66fda20c1c6685d3c0609e",
+      "mode": "LOCAL_DEMO",
       "status": "CONFIRMED",
+      "isEvmTransaction": false,
+      "transactionHash": null,
+      "localProofHash": "de92c1d8843d385f5801b5bd421eb4175833ff7c9f42d1316290cf5ced14c32b",
+      "sequenceNumber": 1000002,
+      "blockNumber": 1000002,
+      "timestamp": "2026-10-19T20:25:28.742Z",
+      "attesterOrReporter": "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7",
+      "network": "Local Secure Proof Log (SHA-256 Chain)",
       "explorerUrl": null,
-      "gasUsed": "24500",
-      "notes": "Corroborating attestation recorded by 0x89205A... for observation obs-verify-20261019-01."
+      "explanation": "Corroborating witness attestation anchored in local proof log. Sequence #1000002. Attester: 0x89205A3A..."
     },
     {
       "recordId": "asr_fac-pune-mandai-01_20261019T100000_1e8338b4",
       "recordType": "ADAPTATION_SERVICE_RECEIPT",
-      "digest": "0xf5f17b7483509a839d795a5c8f6521baec671ff9956e5e56e40cc8de3e1f64df",
-      "network": "Local Secure Proof Log",
-      "transactionHash": "0x97fda962fcdce3e2e5aa3d2e51a3ed22a6c5f12cafd8e22483b9b9d12e24f425",
-      "blockNumber": 1048203,
-      "timestamp": "2026-10-19T18:38:00.791Z",
+      "facilityId": "fac-pune-mandai-01",
+      "recordDigest": "0xf5f17b7483509a839d795a5c8f6521baec671ff9956e5e56e40cc8de3e1f64df",
+      "mode": "LOCAL_DEMO",
       "status": "CONFIRMED",
+      "isEvmTransaction": false,
+      "transactionHash": null,
+      "localProofHash": "6e3673262c36666396fa3c32b315fc204ee3d6ce5715b8db53cbe5be19c57139",
+      "sequenceNumber": 1000003,
+      "blockNumber": 1000003,
+      "timestamp": "2026-10-19T20:25:28.743Z",
+      "attesterOrReporter": "Local Civic Operator",
+      "network": "Local Secure Proof Log (SHA-256 Chain)",
       "explorerUrl": null,
-      "gasUsed": "48200",
-      "notes": "Adaptation Service Receipt asr_fac-pune-mandai-01_20261019T100000_1e8338b4 anchored to cryptographic hash chain. Zone: Pune Central (Shivajinagar & Mandai)."
+      "explanation": "Adaptation Service Receipt Merkle root anchored in local proof log for fac-pune-mandai-01 (Pune Central (Shivajinagar & Mandai)). Sequence #1000003.",
+      "notes": "Zone: Pune Central (Shivajinagar & Mandai)"
     }
   ]
 }

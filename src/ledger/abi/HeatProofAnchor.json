@@ -1,0 +1,83 @@
+[
+  {
+    "type": "event",
+    "name": "AdaptationProofAnchored",
+    "inputs": [
+      { "name": "evidenceDigest", "type": "bytes32", "indexed": true },
+      { "name": "facilityId", "type": "string", "indexed": false },
+      { "name": "operationalState", "type": "uint8", "indexed": false },
+      { "name": "timestamp", "type": "uint256", "indexed": false },
+      { "name": "attester", "type": "address", "indexed": true }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "AdaptationServiceReceiptAnchored",
+    "inputs": [
+      { "name": "merkleRoot", "type": "bytes32", "indexed": true },
+      { "name": "receiptId", "type": "string", "indexed": false },
+      { "name": "facilityId", "type": "string", "indexed": false },
+      { "name": "protectedPopulation", "type": "uint256", "indexed": false },
+      { "name": "litersDispensed", "type": "uint256", "indexed": false },
+      { "name": "timestamp", "type": "uint256", "indexed": false },
+      { "name": "submitter", "type": "address", "indexed": true }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "function",
+    "name": "anchorProof",
+    "inputs": [
+      { "name": "evidenceDigest", "type": "bytes32" },
+      { "name": "facilityId", "type": "string" },
+      { "name": "operationalState", "type": "uint8" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "anchorReceipt",
+    "inputs": [
+      { "name": "merkleRoot", "type": "bytes32" },
+      { "name": "receiptId", "type": "string" },
+      { "name": "facilityId", "type": "string" },
+      { "name": "protectedPopulation", "type": "uint256" },
+      { "name": "litersDispensed", "type": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "anchoredDigests",
+    "inputs": [
+      { "name": "", "type": "bytes32" }
+    ],
+    "outputs": [
+      { "name": "", "type": "bool" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "totalAnchoredProofs",
+    "inputs": [],
+    "outputs": [
+      { "name": "", "type": "uint256" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "isAnchored",
+    "inputs": [
+      { "name": "digest", "type": "bytes32" }
+    ],
+    "outputs": [
+      { "name": "", "type": "bool" }
+    ],
+    "stateMutability": "view"
+  }
+]

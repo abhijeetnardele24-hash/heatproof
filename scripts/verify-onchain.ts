@@ -1,30 +1,31 @@
 /**
- * Autonomous Verification Script for On-Chain / Ledger Proofs
+ * Truthful Verification Script for Cryptographic Proof Ledger
  *
- * Tests the ledger provider, anchors evidence hashes and sample ASR receipts,
- * and generates docs/live_proof.json and docs/LIVE_PROOF.md with genuine verified data.
+ * Verifies the ledger provider, anchors evidence digests and sample ASR receipts,
+ * validates cryptographic integrity, and generates docs/live_proof.json and docs/LIVE_PROOF.md
+ * with genuine, un-faked records.
  */
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { EvmLedgerProvider, LocalDeterministicLedgerProvider } from "../src/ledger/ledgerProvider";
+import { LocalDeterministicLedgerProvider, EvmBrowserWalletLedgerProvider } from "../src/ledger/ledgerProvider";
 import { sha256Hex } from "../src/privacy/evidenceHasher";
 
 async function main() {
-  console.log("=== HeatProof Blockchain Ledger Verification Gate ===");
+  console.log("=== HeatProof Cryptographic Proof Ledger Verification Gate ===");
 
   const localProvider = new LocalDeterministicLedgerProvider();
-  const evmProvider = new EvmLedgerProvider();
+  const evmProvider = new EvmBrowserWalletLedgerProvider();
 
   const localStatus = await localProvider.getNetworkStatus();
   console.log(`Local Ledger Status:`, localStatus);
 
   const evmStatus = await evmProvider.getNetworkStatus();
-  console.log(`EVM Testnet Status:`, evmStatus);
+  console.log(`EVM Browser Wallet Status:`, evmStatus);
 
-  // Active provider selection: EVM if online, otherwise deterministic local
-  const activeProvider = evmStatus.isAvailable ? evmProvider : localProvider;
-  const activeStatus = await activeProvider.getNetworkStatus();
+  // In headless Node/CI environment without window.ethereum, active is LocalDeterministicLedgerProvider
+  const activeProvider = localProvider;
+  const activeStatus = localStatus;
 
   // Test 1: Record an observation digest
   const sampleObsDigest = sha256Hex("heatproof:observation:mandai_central:20261019T1100");
@@ -36,7 +37,10 @@ async function main() {
   );
   console.log(`\n[1/3] Recorded Observation Digest:`);
   console.log(`- Record ID: ${obsReceipt.recordId}`);
-  console.log(`- Digest: ${obsReceipt.digest}`);
+  console.log(`- Digest: ${obsReceipt.recordDigest}`);
+  console.log(`- Mode: ${obsReceipt.mode}`);
+  console.log(`- Is EVM Tx: ${obsReceipt.isEvmTransaction}`);
+  console.log(`- Local Proof Hash: ${obsReceipt.localProofHash}`);
   console.log(`- Tx Hash: ${obsReceipt.transactionHash}`);
   console.log(`- Status: ${obsReceipt.status}`);
   console.log(`- Network: ${obsReceipt.network}`);
@@ -46,13 +50,14 @@ async function main() {
   const attReceipt = await activeProvider.recordAttestationDigest(
     "att-verify-20261019-01",
     obsReceipt.recordId,
+    "fac-pune-mandai-01",
     sampleAttDigest,
     "0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7"
   );
   console.log(`\n[2/3] Recorded Attestation Digest:`);
   console.log(`- Record ID: ${attReceipt.recordId}`);
-  console.log(`- Digest: ${attReceipt.digest}`);
-  console.log(`- Tx Hash: ${attReceipt.transactionHash}`);
+  console.log(`- Digest: ${attReceipt.recordDigest}`);
+  console.log(`- Local Proof Hash: ${attReceipt.localProofHash}`);
   console.log(`- Status: ${attReceipt.status}`);
 
   // Test 3: Anchor an Adaptation Service Receipt (ASR)
@@ -65,9 +70,16 @@ async function main() {
   );
   console.log(`\n[3/3] Anchored Adaptation Service Receipt (ASR):`);
   console.log(`- Receipt ID: ${asrReceipt.recordId}`);
-  console.log(`- Merkle Root: ${asrReceipt.digest}`);
-  console.log(`- Tx Hash: ${asrReceipt.transactionHash}`);
+  console.log(`- Merkle Root: ${asrReceipt.recordDigest}`);
+  console.log(`- Local Proof Hash: ${asrReceipt.localProofHash}`);
   console.log(`- Status: ${asrReceipt.status}`);
+
+  // Verify integrity
+  const verifyResult = await activeProvider.verifyDigest(obsReceipt.recordId, sampleObsDigest);
+  if (!verifyResult.verified) {
+    throw new Error(`Cryptographic verification failed: ${verifyResult.discrepancy}`);
+  }
+  console.log(`\n[Integrity] Cryptographic verification passed for record ${obsReceipt.recordId}`);
 
   const proofData = {
     verifiedAt: new Date().toISOString(),
@@ -87,66 +99,77 @@ async function main() {
   console.log(`\nWrote JSON proof artifact to ${jsonPath}`);
 
   // Generate LIVE_PROOF.md
-  const mdContent = `# HeatProof — Cryptographic Ledger & Blockchain Proof Report
+  const mdContent = `# HeatProof — Cryptographic Proof Ledger Report
 
 Generated automatically by \`scripts/verify-onchain.ts\` on **${new Date().toUTCString()}**.
 
-## 1. Network Status & Operating Mode
+## 1. Truthful Ledger Operating Modes
+
+HeatProof strictly enforces four explicit operating modes to prevent misleading users or judges:
+
+| Mode | Description | Explorer Link Rule |
+|---|---|---|
+| \`LOCAL_DEMO\` | Client-side append-only SHA-256 hash chain sequence. Zero simulated EVM hashes. | \`null\` (No explorer URL) |
+| \`TESTNET_PENDING_SIGNATURE\` | Web3 browser wallet requested (EIP-1193); waiting for human user approval. | \`null\` until broadcast |
+| \`TESTNET_CONFIRMED\` | Real transaction broadcast to Arbitrum Sepolia (Chain ID 421614) and confirmed by on-chain receipt. | \`https://sepolia.arbiscan.io/tx/{hash}\` |
+| \`DEGRADED\` | Wallet rejected, network error, or RPC unavailable. System operates offline with local evidence queue. | \`null\` |
+
+---
+
+## 2. Active Verification Status (Headless / CI Environment)
 
 | Property | Value |
 |---|---|
 | **Active Mode** | \`${activeStatus.mode}\` |
 | **Active Provider** | ${activeStatus.providerName} |
 | **Network Name** | ${activeStatus.networkName} |
-| **EVM Chain ID** | ${activeStatus.chainId || "N/A (Local Proof Chain)"} |
-| **Block Height** | \`#${activeStatus.blockHeight || "N/A"}\` |
-| **RPC Availability** | ${activeStatus.isAvailable ? "Online (Live / Testnet)" : "Fallback to Deterministic Cryptographic Chain"} |
-
-${activeStatus.rateLimitWarning ? `> [!NOTE]\n> **Fallback Advisory**: ${activeStatus.rateLimitWarning}` : ""}
+| **Block / Sequence Height** | \`#${activeStatus.blockHeight || "N/A"}\` |
+| **Is EVM Transaction** | \`false\` (Truthful: In CI/Headless, no browser wallet is injected) |
+| **Explorer URL** | \`null\` (Truthful: Never fabricated for local proofs) |
 
 ---
 
-## 2. Verified Ledger Receipts
+## 3. Verified Cryptographic Records
 
 ### A. Observation Digest Anchor
 - **Record ID**: \`${obsReceipt.recordId}\`
 - **Record Type**: \`${obsReceipt.recordType}\`
-- **Canonical SHA-256 Digest**: \`${obsReceipt.digest}\`
-- **Transaction Hash**: \`${obsReceipt.transactionHash}\`
-- **Block Number**: \`#${obsReceipt.blockNumber}\`
+- **Canonical SHA-256 Digest**: \`${obsReceipt.recordDigest}\`
+- **Local Proof Hash**: \`${obsReceipt.localProofHash}\`
+- **EVM Transaction Hash**: \`${obsReceipt.transactionHash ?? "null (Local proof log)"}\`
+- **Sequence Number**: \`#${obsReceipt.sequenceNumber}\`
 - **Status**: \`${obsReceipt.status}\`
 - **Network**: ${obsReceipt.network}
-- **Explorer Link**: ${obsReceipt.explorerUrl ? `[View on Explorer](${obsReceipt.explorerUrl})` : "Cryptographic Hash Log (Local Verified Node)"}
+- **Explorer Link**: ${obsReceipt.explorerUrl ? `[View on Arbiscan](${obsReceipt.explorerUrl})` : "None (Cryptographic Hash Log)"}
 
 ### B. Corroborating Witness Attestation
 - **Record ID**: \`${attReceipt.recordId}\`
 - **Parent Observation**: \`obs-verify-20261019-01\`
-- **Witness Digest**: \`${attReceipt.digest}\`
-- **Transaction Hash**: \`${attReceipt.transactionHash}\`
-- **Block Number**: \`#${attReceipt.blockNumber}\`
+- **Witness Digest**: \`${attReceipt.recordDigest}\`
+- **Local Proof Hash**: \`${attReceipt.localProofHash}\`
 - **Status**: \`${attReceipt.status}\`
 
 ### C. Adaptation Service Receipt (ASR) Anchor
 - **Receipt ID**: \`${asrReceipt.recordId}\`
-- **Merkle Aggregate Root**: \`${asrReceipt.digest}\`
-- **Transaction Hash**: \`${asrReceipt.transactionHash}\`
-- **Block Number**: \`#${asrReceipt.blockNumber}\`
+- **Merkle Aggregate Root**: \`${asrReceipt.recordDigest}\`
+- **Local Proof Hash**: \`${asrReceipt.localProofHash}\`
 - **Status**: \`${asrReceipt.status}\`
 - **Notes**: ${asrReceipt.notes}
 
 ---
 
-## 3. Cryptographic Proof Invariants Enforced
+## 4. Cryptographic Proof Invariants Enforced
 
-1. **Deterministic Preimage Hashing**: All transaction hashes and Merkle roots are deterministically generated from canonical JSON representations without arbitrary salt.
-2. **Fail-Closed Verification**: Any discrepancy between on-chain / logged digests and recomputed evidence payloads results in immediate invalidation.
-3. **Zero PII on Ledger**: Only SHA-256 digests of privacy-sanitized evidence are recorded on public or local ledgers.
+1. **Deterministic Preimage Hashing**: All hashes are deterministically generated from canonical JSON representations without arbitrary salt.
+2. **Fail-Closed Verification**: Any discrepancy between logged digests and recomputed evidence payloads results in immediate invalidation.
+3. **Zero PII on Ledger**: Only SHA-256 digests of privacy-sanitized evidence are recorded.
+4. **No Simulated EVM Hashes**: A local SHA-256 hash is never formatted or represented as an EVM transaction hash.
 `;
 
   const mdPath = path.join(docsDir, "LIVE_PROOF.md");
   fs.writeFileSync(mdPath, mdContent, "utf8");
   console.log(`Wrote markdown proof documentation to ${mdPath}`);
-  console.log("=== Blockchain Proof Verification Gate Passed ===");
+  console.log("=== Proof Ledger Verification Gate Passed ===");
 }
 
 main().catch((err) => {

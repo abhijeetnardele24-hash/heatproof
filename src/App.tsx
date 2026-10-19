@@ -17,6 +17,8 @@ import {
 import { Language, TRANSLATIONS } from "./i18n/translations";
 import { Search, ShieldCheck, CheckCircle2, WifiOff } from "lucide-react";
 
+import { eventStore } from "./domain/storage";
+
 export const App: React.FC = () => {
   const [facilities, setFacilities] = useState<Facility[]>(INITIAL_FACILITIES);
   const [selectedZone, setSelectedZone] = useState<string>("pune_core");
@@ -55,8 +57,10 @@ export const App: React.FC = () => {
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  const [asrs] = useState<AdaptationServiceReceipt[]>([
-    {
+  const [asrs, setAsrs] = useState<AdaptationServiceReceipt[]>(() => {
+    const stored = eventStore.getReceipts();
+    if (stored.length > 0) return stored;
+    const seedAsr: AdaptationServiceReceipt = {
       receiptId: "asr_fac-pune-mandai-01_20261019T100000_1e8338b4",
       version: "1.0.0",
       facilityId: "fac-pune-mandai-01",
@@ -95,8 +99,10 @@ export const App: React.FC = () => {
       ],
       issuedAt: "2026-10-19T11:45:00Z",
       issuerAddress: "0x1234567890123456789012345678901234567890",
-    },
-  ]);
+    };
+    eventStore.saveReceipt(seedAsr);
+    return [seedAsr];
+  });
 
   const t = TRANSLATIONS[lang];
 
@@ -148,23 +154,30 @@ export const App: React.FC = () => {
 
   const handleObservationSuccess = (
     facilityId: string,
-    newState: OperationalState,
+    _newState: OperationalState,
     digest: string
   ) => {
+    const hazardContext = {
+      heatIndexCelsius: climateObservation.heatIndexC,
+      hazardLevel: climateObservation.severity,
+    };
+    const evalResult = eventStore.evaluateFacility(facilityId, new Date(), hazardContext);
+
     setFacilities((prev) =>
       prev.map((f) =>
         f.facilityId === facilityId
           ? {
               ...f,
-              currentComputedStatus: newState === "available" ? "PROPOSED_AVAILABLE" : "PROPOSED_UNAVAILABLE",
+              currentComputedStatus: evalResult.state,
               lastVerificationTime: new Date().toISOString(),
-              independentAttestationCount: f.independentAttestationCount + 1,
+              independentAttestationCount: evalResult.independentAttestationCount,
+              disputeStatus: evalResult.activeDispute ? "active_dispute" : "none",
             }
           : f
       )
     );
     showToast(
-      `Observation anchored successfully! State updated to ${newState}. Digest: ${digest.slice(0, 10)}...`
+      `Observation anchored successfully! Canonical state: ${evalResult.state}. Digest: ${digest.slice(0, 10)}...`
     );
   };
 
@@ -173,22 +186,42 @@ export const App: React.FC = () => {
     verdict: AttestationVerdict,
     digest: string
   ) => {
+    const hazardContext = {
+      heatIndexCelsius: climateObservation.heatIndexC,
+      hazardLevel: climateObservation.severity,
+    };
+    const evalResult = eventStore.evaluateFacility(facilityId, new Date(), hazardContext);
+
     setFacilities((prev) =>
-      prev.map((f) => {
-        if (f.facilityId !== facilityId) return f;
-        let newStatus = f.currentComputedStatus;
-        if (verdict === "CONFIRM") newStatus = "VERIFIED_AVAILABLE";
-        if (verdict === "CHALLENGE") newStatus = "VERIFIED_UNAVAILABLE";
-        if (verdict === "UNCERTAIN") newStatus = "UNCERTAIN";
-        return {
-          ...f,
-          currentComputedStatus: newStatus,
-          lastVerificationTime: new Date().toISOString(),
-          independentAttestationCount: f.independentAttestationCount + 1,
-        };
-      })
+      prev.map((f) =>
+        f.facilityId === facilityId
+          ? {
+              ...f,
+              currentComputedStatus: evalResult.state,
+              lastVerificationTime: new Date().toISOString(),
+              independentAttestationCount: evalResult.independentAttestationCount,
+              disputeStatus: evalResult.activeDispute ? "active_dispute" : "none",
+            }
+          : f
+      )
     );
-    showToast(`Attestation recorded on proof log. Verdict: ${verdict}. Digest: ${digest.slice(0, 10)}...`);
+
+    // If verified available or restored, event-source a new ASR
+    if (evalResult.state === "VERIFIED_AVAILABLE" || evalResult.state === "RESTORED") {
+      const targetFacility = facilities.find((f) => f.facilityId === facilityId);
+      if (targetFacility) {
+        try {
+          const newAsr = eventStore.issueReceiptForFacility(targetFacility, hazardContext);
+          setAsrs((prev) => [newAsr, ...prev.filter((r) => r.receiptId !== newAsr.receiptId)]);
+        } catch {
+          // ignore
+        }
+      }
+    }
+
+    showToast(
+      `Attestation recorded on proof log. Verdict: ${verdict}. State: ${evalResult.state}. Digest: ${digest.slice(0, 10)}...`
+    );
   };
 
   // Filter facilities
@@ -374,7 +407,7 @@ export const App: React.FC = () => {
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
                   gap: "1rem",
                 }}
               >

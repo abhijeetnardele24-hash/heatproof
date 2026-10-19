@@ -75,21 +75,21 @@ export const ReliefCard: React.FC<ReliefCardProps> = ({
     if (isOperational) {
       return {
         label: t.statusOperational,
-        color: "#0D9488",
+        color: "#0F766E",
         bg: "#F0FDFA",
         border: "#99F6E4",
       };
     } else if (isRestoring) {
       return {
         label: t.statusRestoring,
-        color: "#D97706",
+        color: "#9A3412",
         bg: "#FEF3C7",
         border: "#FDE68A",
       };
     } else {
       return {
         label: t.statusInoperable,
-        color: "#DC2626",
+        color: "#B91C1C",
         bg: "#FEE2E2",
         border: "#FECACA",
       };
@@ -229,8 +229,8 @@ export const ReliefCard: React.FC<ReliefCardProps> = ({
       {/* Action Buttons */}
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          display: "flex",
+          flexDirection: "column",
           gap: "0.5rem",
           marginTop: "1rem",
           paddingTop: "0.75rem",
@@ -245,16 +245,18 @@ export const ReliefCard: React.FC<ReliefCardProps> = ({
             alignItems: "center",
             justifyContent: "center",
             gap: "0.35rem",
+            minHeight: "44px",
             padding: "0.5rem 0.75rem",
             borderRadius: "var(--radius-md)",
             border: "1px solid var(--border-strong)",
             backgroundColor: "var(--bg-surface)",
             color: "var(--text-main)",
             fontWeight: "600",
-            fontSize: "0.8rem",
+            fontSize: "0.85rem",
+            cursor: "pointer",
           }}
         >
-          <FileCheck size={14} />
+          <FileCheck size={16} />
           {t.actionReport}
         </button>
 
@@ -266,16 +268,18 @@ export const ReliefCard: React.FC<ReliefCardProps> = ({
             alignItems: "center",
             justifyContent: "center",
             gap: "0.35rem",
+            minHeight: "44px",
             padding: "0.5rem 0.75rem",
             borderRadius: "var(--radius-md)",
             backgroundColor: "var(--accent-teal)",
             color: "#FFFFFF",
             fontWeight: "600",
-            fontSize: "0.8rem",
+            fontSize: "0.85rem",
             boxShadow: "var(--shadow-sm)",
+            cursor: "pointer",
           }}
         >
-          <UserCheck size={14} />
+          <UserCheck size={16} />
           {t.actionAttest}
         </button>
       </div>

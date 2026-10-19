@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { evaluateFacilityState } from "../../src/domain/stateMachine";
 import { Observation, Attestation } from "../../src/domain/types";
 
-describe("Deterministic Attestation State Machine", () => {
+describe("Deterministic Attestation State Machine & Quorum Policy", () => {
   const baseTime = new Date("2026-10-19T12:00:00.000Z");
   const validExpiry = new Date("2026-10-19T14:00:00.000Z").toISOString();
   const pastExpiry = new Date("2026-10-19T11:00:00.000Z").toISOString();
@@ -54,23 +54,37 @@ describe("Deterministic Attestation State Machine", () => {
     expect(res.isExpired).toBe(true);
   });
 
-  it("3. transitions to PROPOSED_AVAILABLE when a single available observation has no attestations", () => {
+  it("3. transitions to PROPOSED_AVAILABLE when a single available observation has 0 attestations", () => {
     const obs = mockObservation({ humanConfirmedState: "available" });
     const res = evaluateFacilityState(obs, [], baseTime);
     expect(res.state).toBe("PROPOSED_AVAILABLE");
     expect(res.independentAttestationCount).toBe(0);
     expect(res.activeDispute).toBe(false);
+    expect(res.reason).toContain("awaiting independent attestation quorum (0/2)");
   });
 
-  it("4. transitions to PROPOSED_UNAVAILABLE when a single unavailable observation has no attestations", () => {
-    const obs = mockObservation({ humanConfirmedState: "unavailable" });
-    const res = evaluateFacilityState(obs, [], baseTime);
-    expect(res.state).toBe("PROPOSED_UNAVAILABLE");
-    expect(res.independentAttestationCount).toBe(0);
-    expect(res.effectiveOperationalState).toBe("unavailable");
+  it("4. strictly requires 2 independent witnesses for availability: stays PROPOSED_AVAILABLE at 1 confirmation", () => {
+    const obs = mockObservation({ humanConfirmedState: "available" });
+    const att1 = mockAttestation({ attester: "0x2222222222222222222222222222222222222222" });
+
+    const res = evaluateFacilityState(obs, [att1], baseTime);
+    expect(res.state).toBe("PROPOSED_AVAILABLE");
+    expect(res.independentAttestationCount).toBe(1);
+    expect(res.reason).toContain("awaiting 2nd independent witness confirmation for verified availability (1/2)");
   });
 
-  it("5. strictly rejects self-attestation (reporter == attester)", () => {
+  it("5. transitions to VERIFIED_AVAILABLE once 2 independent confirmations are received", () => {
+    const obs = mockObservation({ humanConfirmedState: "available" });
+    const att1 = mockAttestation({ attestationId: "att_1", attester: "0x2222222222222222222222222222222222222222" });
+    const att2 = mockAttestation({ attestationId: "att_2", attester: "0x3333333333333333333333333333333333333333" });
+
+    const res = evaluateFacilityState(obs, [att1, att2], baseTime);
+    expect(res.state).toBe("VERIFIED_AVAILABLE");
+    expect(res.independentAttestationCount).toBe(2);
+    expect(res.effectiveOperationalState).toBe("available");
+  });
+
+  it("6. strictly rejects self-attestation (reporter == attester)", () => {
     const obs = mockObservation({
       reporter: "0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
       humanConfirmedState: "available",
@@ -81,14 +95,14 @@ describe("Deterministic Attestation State Machine", () => {
     });
 
     const res = evaluateFacilityState(obs, [selfAttestation], baseTime);
-    expect(res.state).toBe("PROPOSED_AVAILABLE"); // Stays proposed, self-attestation rejected!
+    expect(res.state).toBe("PROPOSED_AVAILABLE");
     expect(res.independentAttestationCount).toBe(0);
     expect(res.validAttestations.length).toBe(0);
     expect(res.rejectedAttestations.length).toBe(1);
     expect(res.rejectedAttestations[0].reason).toContain("Self-attestation rejected");
   });
 
-  it("6. strictly deduplicates multiple attestations from the same address (Sybil protection)", () => {
+  it("7. strictly deduplicates multiple attestations from the same address (Sybil protection)", () => {
     const obs = mockObservation({ reporter: "0x1111111111111111111111111111111111111111" });
     const att1 = mockAttestation({
       attestationId: "att_1",
@@ -97,39 +111,49 @@ describe("Deterministic Attestation State Machine", () => {
     });
     const att2 = mockAttestation({
       attestationId: "att_2",
-      attester: "0x2222222222222222222222222222222222222222", // same attester!
+      attester: "0x2222222222222222222222222222222222222222", // duplicate!
       verdict: "CONFIRM",
     });
 
     const res = evaluateFacilityState(obs, [att1, att2], baseTime);
-    expect(res.state).toBe("VERIFIED_AVAILABLE");
-    expect(res.independentAttestationCount).toBe(1); // Not 2!
+    expect(res.state).toBe("PROPOSED_AVAILABLE"); // only 1 unique valid attestation, needs 2!
+    expect(res.independentAttestationCount).toBe(1);
     expect(res.validAttestations.length).toBe(1);
     expect(res.rejectedAttestations.length).toBe(1);
     expect(res.rejectedAttestations[0].reason).toContain("Duplicate attestation rejected");
   });
 
-  it("7. transitions to VERIFIED_AVAILABLE upon independent confirmation", () => {
-    const obs = mockObservation({ humanConfirmedState: "available" });
-    const att = mockAttestation({ verdict: "CONFIRM" });
-
-    const res = evaluateFacilityState(obs, [att], baseTime);
-    expect(res.state).toBe("VERIFIED_AVAILABLE");
-    expect(res.independentAttestationCount).toBe(1);
-    expect(res.effectiveOperationalState).toBe("available");
-  });
-
-  it("8. transitions to VERIFIED_UNAVAILABLE upon independent confirmation of outage", () => {
+  it("8. standard outage verification requires 2 independent witnesses under normal weather", () => {
     const obs = mockObservation({ humanConfirmedState: "unavailable" });
-    const att = mockAttestation({ verdict: "CONFIRM" });
+    const att1 = mockAttestation({ attester: "0x2222222222222222222222222222222222222222" });
 
-    const res = evaluateFacilityState(obs, [att], baseTime);
-    expect(res.state).toBe("VERIFIED_UNAVAILABLE");
-    expect(res.independentAttestationCount).toBe(1);
-    expect(res.effectiveOperationalState).toBe("unavailable");
+    // Under normal temperature (30°C)
+    const normalWeather = { heatIndexCelsius: 30, hazardLevel: "NORMAL" as const };
+    const res1 = evaluateFacilityState(obs, [att1], baseTime, normalWeather);
+    expect(res1.state).toBe("PROPOSED_UNAVAILABLE");
+    expect(res1.independentAttestationCount).toBe(1);
+
+    const att2 = mockAttestation({ attestationId: "att_2", attester: "0x3333333333333333333333333333333333333333" });
+    const res2 = evaluateFacilityState(obs, [att1, att2], baseTime, normalWeather);
+    expect(res2.state).toBe("VERIFIED_UNAVAILABLE");
+    expect(res2.independentAttestationCount).toBe(2);
   });
 
-  it("9. transitions to DISPUTED immediately when challenged by an independent witness", () => {
+  it("9. accelerates outage verification to 1 independent witness under active extreme heat hazard (Heat Index >= 42°C)", () => {
+    const obs = mockObservation({ humanConfirmedState: "unavailable" });
+    const att1 = mockAttestation({ attester: "0x2222222222222222222222222222222222222222" });
+
+    // Active extreme heat condition: 43.5°C Heat Index
+    const extremeHeat = { heatIndexCelsius: 43.5, hazardLevel: "DANGER" as const };
+    const res = evaluateFacilityState(obs, [att1], baseTime, extremeHeat);
+
+    expect(res.state).toBe("VERIFIED_UNAVAILABLE");
+    expect(res.hazardAccelerated).toBe(true);
+    expect(res.requiredAttestations).toBe(1);
+    expect(res.reason).toContain("Emergency outage confirmed by 1 witness under active heat hazard (43.5°C Heat Index)");
+  });
+
+  it("10. transitions to DISPUTED immediately when challenged by an independent witness", () => {
     const obs = mockObservation({ humanConfirmedState: "available" });
     const attChallenge = mockAttestation({ verdict: "CHALLENGE" });
 
@@ -139,20 +163,21 @@ describe("Deterministic Attestation State Machine", () => {
     expect(res.effectiveOperationalState).toBe("uncertain");
   });
 
-  it("10. transitions to RESTORED when an available observation references a prior outage ID", () => {
+  it("11. transitions to RESTORED when an available observation references a prior outage ID and quorum is met", () => {
     const obs = mockObservation({
       humanConfirmedState: "available",
       restoredOutageId: "obs_outage_prior_99",
     });
-    const att = mockAttestation({ verdict: "CONFIRM" });
+    const att1 = mockAttestation({ attestationId: "att_1", attester: "0x2222222222222222222222222222222222222222" });
+    const att2 = mockAttestation({ attestationId: "att_2", attester: "0x3333333333333333333333333333333333333333" });
 
-    const res = evaluateFacilityState(obs, [att], baseTime);
+    const res = evaluateFacilityState(obs, [att1, att2], baseTime);
     expect(res.state).toBe("RESTORED");
     expect(res.effectiveOperationalState).toBe("available");
     expect(res.reason).toContain("obs_outage_prior_99");
   });
 
-  it("11. transitions to UNCERTAIN when reported state is uncertain or attestations are inconclusive", () => {
+  it("12. transitions to UNCERTAIN when reported state is uncertain or attestations are inconclusive", () => {
     const obs = mockObservation({ humanConfirmedState: "uncertain" });
     const res = evaluateFacilityState(obs, [], baseTime);
     expect(res.state).toBe("UNCERTAIN");

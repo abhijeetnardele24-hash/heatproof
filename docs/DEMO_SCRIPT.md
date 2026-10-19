@@ -40,12 +40,12 @@
 
 ---
 
-### [2:15 - 2:40] Cryptographic Proof Inspector & On-Chain Receipts
-- **Visual**: Click "Inspect Proof" on Relief Card (`docs/assets/screenshots/03_cryptographic_inspector.png`). Display the canonical SHA-256 evidence digest and Arbitrum Sepolia transaction hash.
+### [2:15 - 2:40] Cryptographic Proof Inspector & Verifiable Receipts
+- **Visual**: Click "Inspect Proof" on Relief Card (`docs/assets/screenshots/03_cryptographic_inspector.png`). Display the canonical SHA-256 evidence digest, witness breakdown, and local cryptographic block hash.
 - **Narrator**:
-  > *"Every verified state change generates a deterministic canonical SHA-256 evidence digest anchored directly to the Arbitrum Sepolia blockchain via viem.*  
-  > *In the Cryptographic Evidence Inspector, any auditor can verify the zero-PII preimage payload, examine the Merkle root aggregation, and confirm on Arbiscan that the adaptation record is immutable and tamper-proof.*  
-  > *If network grids collapse, our Service Worker and local cryptographic hash chain ensure 100% offline continuity."*
+  > *"Every verified state change generates a deterministic canonical SHA-256 evidence digest anchored into our local cryptographic hash chain, with ready Viem integration for Arbitrum Sepolia testnet broadcast.*  
+  > *In the Cryptographic Evidence Inspector, any auditor can verify the zero-PII preimage payload, examine independent witness corroborations, and confirm the Merkle root aggregation.*  
+  > *If cell grids collapse, our Service Worker and offline local hash chain ensure uninterrupted continuity with zero data loss."*
 
 ---
 

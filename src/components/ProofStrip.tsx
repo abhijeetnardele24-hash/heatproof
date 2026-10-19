@@ -91,6 +91,7 @@ export const ProofStrip: React.FC<ProofStripProps> = ({
 
       <button
         onClick={onInspect}
+        aria-label="Inspect Proof"
         style={{
           display: "flex",
           alignItems: "center",
@@ -98,13 +99,15 @@ export const ProofStrip: React.FC<ProofStripProps> = ({
           color: "var(--accent-teal-dark)",
           fontWeight: "700",
           fontSize: "0.75rem",
-          padding: "0.2rem 0.5rem",
+          padding: "0.4rem 0.75rem",
           borderRadius: "var(--radius-sm)",
           backgroundColor: "rgba(13, 148, 136, 0.1)",
-          minHeight: "28px",
+          minHeight: "44px",
+          border: "none",
+          cursor: "pointer",
         }}
       >
-        <Eye size={12} />
+        <Eye size={14} />
         Inspect Proof
       </button>
     </div>

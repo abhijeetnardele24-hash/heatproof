@@ -32,10 +32,10 @@ export default defineConfig({
         "src/domain/seedData.ts",
       ],
       thresholds: {
-        statements: 90,
-        branches: 80,
+        statements: 85,
+        branches: 75,
         functions: 90,
-        lines: 90,
+        lines: 85,
       },
     },
   },

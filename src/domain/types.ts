@@ -80,16 +80,24 @@ export type DataMode = z.infer<typeof DataModeSchema>;
    ========================================================================= */
 
 export const AiEvidenceProposalSchema = z.object({
-  resource_visible: z.boolean(),
+  providerMode: z.enum(["DETERMINISTIC_RULES", "FIXTURE_EVALUATION", "LOCAL_MULTIMODAL"]).default("DETERMINISTIC_RULES"),
+  modelName: z.string().min(1).default("Deterministic Evidence Rules Assistant"),
+  modelVersion: z.string().min(1).default("HeatProof-Rules-v1.0"),
+  inputType: z.enum(["SANITIZED_IMAGE_METADATA_AND_OBSERVATIONS", "STRUCTURED_OBSERVATIONS", "FIXTURE"]).default("STRUCTURED_OBSERVATIONS"),
+  result: z.enum(["AVAILABLE", "UNAVAILABLE", "UNCERTAIN"]).default("UNCERTAIN"),
+  confidence: z.number().min(0.0).max(1.0),
+  uncertainties: z.array(z.string().min(1)).max(10),
+  latencyMs: z.number().nonnegative().default(0),
+  degradedReason: z.string().optional(),
+  isFixture: z.boolean().default(false),
+  resource_visible: z.boolean().default(true),
   operational_state: OperationalStateSchema,
   accessibility_state: AccessibilityStateSchema,
   queue_band: QueueBandSchema,
   evidence_observations: z.array(z.string().min(1)).max(10),
-  uncertainties: z.array(z.string().min(1)).max(10),
-  confidence: z.number().min(0.0).max(1.0),
-  model_name: z.string().min(1),
-  model_version: z.string().min(1),
-  prompt_version: z.string().min(1),
+  model_name: z.string().optional(),
+  model_version: z.string().optional(),
+  prompt_version: z.string().optional(),
   evaluated_at: z.string().datetime().optional(),
 });
 export type AiEvidenceProposal = z.infer<typeof AiEvidenceProposalSchema>;

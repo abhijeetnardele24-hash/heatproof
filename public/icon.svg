@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="pwaBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#1E293B" />
+    </linearGradient>
+    <linearGradient id="pwaTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14B8A6" />
+      <stop offset="100%" stop-color="#0D9488" />
+    </linearGradient>
+    <filter id="pwaGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="16" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background rounded rectangle -->
+  <rect width="512" height="512" rx="100" fill="url(#pwaBg)" />
+  <rect x="16" y="16" width="480" height="480" rx="88" fill="none" stroke="#334155" stroke-width="4" />
+
+  <!-- Shield Shape -->
+  <g filter="url(#pwaGlow)">
+    <path d="M 256 96 L 384 148 V 264 C 384 350 324 408 256 436 C 188 408 128 350 128 264 V 148 Z" fill="url(#pwaTeal)" />
+    
+    <!-- White Inner Checkmark -->
+    <path d="M 204 260 L 244 300 L 324 212" fill="none" stroke="#FFFFFF" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+</svg>

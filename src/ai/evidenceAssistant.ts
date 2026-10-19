@@ -1,3 +1,16 @@
+/**
+ * Truthful AI & Expert System Provider
+ *
+ * Implements the "Deterministic Evidence Rules Assistant" (HeatProof-Rules-v1.0).
+ *
+ * TRUTHFULNESS NOTICE:
+ * This provider evaluates structured observations, checklist selections, and sanitized image metadata
+ * against deterministic civic heat-adaptation rules and regular expressions.
+ * It does NOT claim to run an unverified black-box neural multimodal vision model in the browser.
+ * It serves strictly as a decision-support proposal generator; human verifiers must explicitly confirm
+ * every observation before canonical state changes or ledger anchoring occur.
+ */
+
 import {
   AiEvidenceProposal,
   AiEvidenceProposalSchema,
@@ -10,9 +23,11 @@ import {
 export interface EvidenceAnalysisInput {
   resourceType: ResourceType;
   imageFingerprint?: string;
+  sanitizedDigest?: string;
   userObservations?: string[];
   cleanNotes?: string;
   coarseZone?: string;
+  isFixture?: boolean;
 }
 
 export interface EvidenceAnalysisProvider {
@@ -20,20 +35,17 @@ export interface EvidenceAnalysisProvider {
 }
 
 export const AI_MODEL_METADATA = {
-  model_name: "HeatProof-Multimodal-Assessor",
-  model_version: "v1.2-edge",
-  prompt_version: "2026.10-adaptation-strict",
+  provider_mode: "DETERMINISTIC_RULES" as const,
+  model_name: "Deterministic Evidence Rules Assistant",
+  model_version: "HeatProof-Rules-v1.0",
+  prompt_version: "2026.10-rules-strict",
 };
 
 /**
- * Heuristic multimodal parser implementing the prompt's rules:
- * - Detects visual equipment indicators and user checklist items
- * - Defends against prompt injection attempts in cleanNotes
- * - Formulates structured uncertainty lists
- * - Produces calibrated confidence scores
- * - Enforces the Zod output schema
+ * Deterministic Evidence Rules Assistant
+ * High-performance rule-based expert engine for field evidence appraisal.
  */
-export class ClientEvidenceAssistant implements EvidenceAnalysisProvider {
+export class DeterministicEvidenceRulesAssistant implements EvidenceAnalysisProvider {
   private isDegraded: boolean;
 
   constructor(isDegraded: boolean = false) {
@@ -41,25 +53,36 @@ export class ClientEvidenceAssistant implements EvidenceAnalysisProvider {
   }
 
   async analyzeEvidence(input: EvidenceAnalysisInput): Promise<AiEvidenceProposal> {
+    const startTime = performance.now();
+
     if (this.isDegraded) {
-      return {
+      const proposal: AiEvidenceProposal = {
+        providerMode: "DETERMINISTIC_RULES",
+        modelName: AI_MODEL_METADATA.model_name,
+        modelVersion: AI_MODEL_METADATA.model_version,
+        inputType: input.sanitizedDigest ? "SANITIZED_IMAGE_METADATA_AND_OBSERVATIONS" : "STRUCTURED_OBSERVATIONS",
+        result: "UNCERTAIN",
+        confidence: 0.0,
+        uncertainties: ["Rule engine offline or degraded; defaulting strictly to manual human observation entry."],
+        latencyMs: Math.round(performance.now() - startTime),
+        degradedReason: "Rule engine offline or degraded",
+        isFixture: !!input.isFixture,
         resource_visible: false,
         operational_state: "uncertain",
         accessibility_state: "uncertain",
-        evidence_observations: ["AI analysis service offline or degraded."],
-        uncertainties: ["Client offline or model endpoint unreachable; defaulting to human manual entry."],
-        confidence: 0.0,
+        queue_band: "unknown",
+        evidence_observations: ["Rule analysis service offline or degraded."],
         model_name: AI_MODEL_METADATA.model_name,
         model_version: AI_MODEL_METADATA.model_version,
         prompt_version: AI_MODEL_METADATA.prompt_version,
-        queue_band: "unknown",
       };
+      return AiEvidenceProposalSchema.parse(proposal);
     }
 
     const notesLower = (input.cleanNotes || "").toLowerCase();
     const obsList = input.userObservations || [];
 
-    // Adversarial Defense: detect prompt injection keywords attempting to hijack evaluation
+    // Adversarial Defense: detect prompt injection directives attempting to hijack evaluation
     const INJECTION_PATTERNS = [
       "ignore previous instructions",
       "system override",
@@ -72,15 +95,23 @@ export class ClientEvidenceAssistant implements EvidenceAnalysisProvider {
 
     if (isInjectionAttempt) {
       const proposal: AiEvidenceProposal = {
+        providerMode: "DETERMINISTIC_RULES",
+        modelName: AI_MODEL_METADATA.model_name,
+        modelVersion: AI_MODEL_METADATA.model_version,
+        inputType: input.sanitizedDigest ? "SANITIZED_IMAGE_METADATA_AND_OBSERVATIONS" : "STRUCTURED_OBSERVATIONS",
+        result: "UNCERTAIN",
+        confidence: 0.1,
+        uncertainties: [
+          "Input text attempted prompt injection / guideline override; automated classification abstained.",
+        ],
+        latencyMs: Math.round(performance.now() - startTime),
+        degradedReason: "Adversarial prompt injection pattern detected",
+        isFixture: !!input.isFixture,
         resource_visible: false,
         operational_state: "uncertain",
         accessibility_state: "uncertain",
         queue_band: "unknown",
         evidence_observations: ["Suspicious adversarial directive detected in evidence text note."],
-        uncertainties: [
-          "Input text attempted prompt injection / guideline override; automated classification abstained.",
-        ],
-        confidence: 0.1,
         model_name: AI_MODEL_METADATA.model_name,
         model_version: AI_MODEL_METADATA.model_version,
         prompt_version: AI_MODEL_METADATA.prompt_version,
@@ -88,7 +119,7 @@ export class ClientEvidenceAssistant implements EvidenceAnalysisProvider {
       return AiEvidenceProposalSchema.parse(proposal);
     }
 
-    // Indicator keyword sets
+    // Indicator keyword sets for deterministic evaluation
     const availableIndicators = [
       "running water",
       "tap flowing",
@@ -204,17 +235,35 @@ export class ClientEvidenceAssistant implements EvidenceAnalysisProvider {
     }
 
     if (evidence_observations.length === 0) {
-      evidence_observations.push(`General visual inspection performed for ${input.resourceType.replace("_", " ")}.`);
+      evidence_observations.push(`Rule evaluation completed for ${input.resourceType.replace("_", " ")}.`);
     }
 
+    const proposalResult =
+      operational_state === "available"
+        ? "AVAILABLE"
+        : operational_state === "unavailable"
+        ? "UNAVAILABLE"
+        : "UNCERTAIN";
+
     const proposal: AiEvidenceProposal = {
+      providerMode: input.isFixture ? "FIXTURE_EVALUATION" : "DETERMINISTIC_RULES",
+      modelName: AI_MODEL_METADATA.model_name,
+      modelVersion: AI_MODEL_METADATA.model_version,
+      inputType: input.sanitizedDigest
+        ? "SANITIZED_IMAGE_METADATA_AND_OBSERVATIONS"
+        : input.isFixture
+        ? "FIXTURE"
+        : "STRUCTURED_OBSERVATIONS",
+      result: proposalResult,
+      confidence: Number(confidence.toFixed(2)),
+      uncertainties,
+      latencyMs: Math.round(performance.now() - startTime),
+      isFixture: !!input.isFixture,
       resource_visible,
       operational_state,
       accessibility_state,
       queue_band,
       evidence_observations,
-      uncertainties,
-      confidence: Number(confidence.toFixed(2)),
       model_name: AI_MODEL_METADATA.model_name,
       model_version: AI_MODEL_METADATA.model_version,
       prompt_version: AI_MODEL_METADATA.prompt_version,
@@ -223,3 +272,6 @@ export class ClientEvidenceAssistant implements EvidenceAnalysisProvider {
     return AiEvidenceProposalSchema.parse(proposal);
   }
 }
+
+/** Backward-compatible export alias */
+export { DeterministicEvidenceRulesAssistant as ClientEvidenceAssistant };

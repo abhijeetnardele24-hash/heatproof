@@ -27,11 +27,10 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
+      className="app-header"
       style={{
         backgroundColor: "var(--bg-surface)",
         borderBottom: "1px solid var(--border-light)",
-        position: "sticky",
-        top: 0,
         zIndex: 50,
       }}
     >

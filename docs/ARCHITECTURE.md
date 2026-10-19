@@ -83,14 +83,14 @@ The lifecycle of every relief facility is strictly governed by a formal finite s
 ### 2.5 Adaptation Service Receipts (ASR) & Merkle Aggregation (`src/domain/receipt.ts`)
 - **Cryptographic Merkle Tree**: Individual adaptation service events are hashed and aggregated into binary Merkle trees using lexicographical sorting (`sha256(min(a,b) + max(a,b))`).
 - **Verifiable Receipt Payload**: Contains Merkle root, facility ID, operating window, protected population count, liters of potable water dispensed, and active Heat Index severity.
-- **Fail-Closed Verification**: Zero-knowledge proof validation ensures that any modified field immediately invalidates the entire Merkle branch.
+- **Fail-Closed Verification**: Strict Merkle tree root path validation ensures that any modified field immediately invalidates the entire Merkle branch.
 
 ---
 
 ### 2.6 Multi-Provider Proof Ledger (`src/ledger/`)
 - **EVM Provider**: Implemented via `viem` on Arbitrum Sepolia (`chainId: 421614`).
-  - Anchor contract emits `AdaptationProofAnchored(bytes32 indexed evidenceDigest, string facilityId, uint8 operationalState, uint256 timestamp)`.
-- **Local Hash Chain Provider**: Implements a deterministic cryptographic block chain (`sha256(index + prevHash + timestamp + payload)`), enabling 100% offline civic operation in low-connectivity disaster environments.
+  - Broadcasts adaptation proofs when a funded private key or wallet connector is configured.
+- **Local Hash Chain Provider**: Implements a deterministic cryptographic block chain (`sha256(index + prevHash + timestamp + payload)`), enabling 100% offline civic operation in low-connectivity disaster environments (`LOCAL_DEMO`).
 - **Fail-Over Architecture**: If RPC endpoints or network connectivity drops, the network seamlessly routes to the local cryptographic chain and resynchronizes upon reconnection.
 
 ---
@@ -98,5 +98,5 @@ The lifecycle of every relief facility is strictly governed by a formal finite s
 ### 2.7 Mineral Civic Presentation Layer (`src/components/`, `src/styles/`)
 - **Design Tokens**: Human-made mineral civic theme using warm stone (`#FBF9F5`), parchment (`#F3EFEA`), and deep mineral teal (`#0D9488`).
 - **Responsive Across 7 Viewports**: Formally verified from 320px ultra-compact mobile up to 1920px large desktop displays.
-- **Accessibility**: 100% Axe WCAG 2.2 AA compliant with zero violations, fully operable via keyboard navigation and screen readers.
+- **Accessibility**: Audited 100% Axe WCAG 2.2 AA compliant with zero violations across all 7 viewports, fully operable via keyboard navigation and screen readers.
 - **Multilingual Support**: Real-time localized strings in English, Hindi (हिंदी), and Marathi (मराठी).
